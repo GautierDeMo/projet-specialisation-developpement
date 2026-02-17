@@ -20,3 +20,9 @@ Modifier le fichier `.env.example` (le renommer `.env`) avec les variables suiva
   * Mettre le même `password` que dans le `DATABASE_URL`
 * POSTGRES_DB
   * Mettre le même `dbname` que dans le `DATABASE_URL`
+
+## BDD
+
+* Se rendre dans le dossier `back`
+* Lancer la BDD après avoir MAJ le fichier `.env` avec la commande `docker compose up`, `-d` est facultatif
+* Faire un `pnpx prisma migrate dev` pour appliquer les migrations une fois la bdd lancée
