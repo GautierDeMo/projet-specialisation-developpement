@@ -64,6 +64,6 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 }
 
-// TODO: Ne pas oublier le `prisma migrate dev` dès lors que le(s) schéma(s) sont écrits
-// Ainsi que la génération du client avec `npx prisma generate`
+// TODO: Ne pas oublier le `(npx) prisma migrate dev` dès lors que le(s) schéma(s) sont écrits
+// Ainsi que la génération du client avec `(npx) prisma generate`
 // https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresq
