@@ -1,5 +1,15 @@
 # Brouillon des choses à faire
 
+## Kifékoa
+
+| Nom   | Tâches                                                                 |
+| :----- | :---------------------------------------------------------------------- |
+| Solène  |                                |
+| Jérémy |                          |
+| Mickaël |  |
+| Gautier | Repo Github, folder front & back, docker compose et postgresql, initialisation express & vite, Début README |
+
+
 ## Tâches à réaliser
 
 * Créer le repo sur GitHub

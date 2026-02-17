@@ -13,6 +13,57 @@ datasource db {
   provider = "postgresql"
 }
 
+model Image {
+  id Int @id @default(autoincrement())
+
+  productId Int    @map("product_id")
+  url       String
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+
+  category    String
+  description String
+  images      Image[]
+  name        String
+  price       Float
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+}
+
+model Token {
+  id Int @id @default(autoincrement())
+
+  expiredAt DateTime @map("expired_at")
+  token     String
+  userId    Int      @map("user_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  email    String  @unique
+  password String
+  // TODO: si on a le temps d'ajouter ce rôle
+  // role     String?
+  token    Token[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+}
+
 // TODO: Ne pas oublier le `prisma migrate dev` dès lors que le(s) schéma(s) sont écrits
 // Ainsi que la génération du client avec `npx prisma generate`
 // https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresq
