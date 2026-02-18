@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:15
-    container_name: postgres-projet-specialisation-developpemment
+    container_name: postgres-projet-specialisation-developpement
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

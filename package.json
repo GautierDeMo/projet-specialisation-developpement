@@ -1,0 +1,14 @@
+{
+  "name": "projet-specialisation-developpement",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter back dev\" \"pnpm --filter front dev\" --names \"BACK,FRONT\" --prefix-colors \"blue,magenta\"",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
+    "start": "pnpm db:start && pnpm dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -25,3 +25,5 @@ dist-ssr
 
 # Parce Mickaël a dit qu'il fallait le faire comme c'est pas automagique
 .env
+.env.local
+.env*.local
