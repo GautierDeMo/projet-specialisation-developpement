@@ -1,0 +1,20 @@
+{
+  "name": "projet-specialisation-developpement",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter back dev\" \"pnpm --filter front dev\" --names \"BACK,FRONT\" --prefix-colors \"blue,magenta\"",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down",
+    "db:reset": "docker-compose down -v && docker-compose up -d",
+    "start": "pnpm db:start && pnpm dev",
+    "prisma:studio": "pnpm --filter back prisma studio",
+    "prisma:migrate": "pnpm --filter back prisma migrate dev",
+    "format": "prettier --write \"**/*.{js,json,md,css,html}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md,css,html}\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.8.1"
+  }
+}
