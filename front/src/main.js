@@ -21,6 +21,4 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
-console.log(process.env)
-
 setupCounter(document.querySelector('#counter'))
