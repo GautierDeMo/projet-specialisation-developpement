@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt'
  *
  * @param {string} text - The string to hash (password, token, etc...)
  *
- * @returns {string} The hashed string
+ * @returns {Promise<string>} The hashed string
  */
 export async function hash(text) {
   return await bcrypt.hash(text, 10)
@@ -17,7 +17,7 @@ export async function hash(text) {
  * @param {string} text
  * @param {string} hashedText
  *
- * @returns {boolean} True if both parameters match
+ * @returns {Promise<boolean>} True if both parameters match
  */
 export async function compare(text, hashedText) {
   return await bcrypt.compare(text, hashedText)
