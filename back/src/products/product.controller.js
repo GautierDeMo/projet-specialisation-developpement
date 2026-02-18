@@ -4,7 +4,11 @@ import { prisma } from "../db/client.js"
 /** @type {import("express").RequestHandler} */
 export async function showProducts(req, res, next) {
   try {
-    res.json({ msg: "Here is a product" })
+    const products = await prisma.product.findMany()
+    if (!products.length) {
+      return res.status(404).json({ msg: "No products in this query" })
+    }
+    return res.status(200).json(products)
   } catch (error) {
     next(error)
   }
