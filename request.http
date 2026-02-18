@@ -1,0 +1,46 @@
+################################## Variables ###################################
+
+@productId=1
+@userId=1
+
+################################## Variables ###################################
+
+################################## GET ROUTES ##################################
+
+### Show all PRODUCTS
+GET http://localhost:3000/products
+
+### Show one PRODUCT
+GET http://localhost:3000/products/{{productId}}
+
+### Search PRODUCTS
+GET http://localhost:3000/products/search
+
+################################# POST ROUTES ##################################
+
+### Create one PRODUCT
+POST http://localhost:3000/products HTTP/1.1
+Content-Type: application/json
+
+{
+  "category": "Cuisine",
+  "description": "Pour mélanger des ingrédients dans une recette",
+  "images": [],
+  "name": "Fouet en silicone",
+  "price": 3.5
+}
+
+################################# PATCH ROUTES #################################
+
+### Update one PRODUCT
+PATCH http://localhost:3000/products/{{productId}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Fouet en inox"
+}
+
+################################# DELETE ROUTES ################################
+
+### Remove one PRODUCT
+DELETE http://localhost:3000/products/{{productId}} HTTP/1.1
