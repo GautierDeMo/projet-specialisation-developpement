@@ -13,7 +13,7 @@ export async function showProducts(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function showOneProduct(req, res, next) {
   try {
-
+    res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)
   }
@@ -22,7 +22,7 @@ export async function showOneProduct(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function searchProducts(req, res, next) {
   try {
-
+    res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)
   }
@@ -31,7 +31,7 @@ export async function searchProducts(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function createProduct(req, res, next) {
   try {
-
+    res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)
   }
@@ -40,7 +40,7 @@ export async function createProduct(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function updateOneProduct(req, res, next) {
   try {
-
+    res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)
   }
@@ -49,16 +49,7 @@ export async function updateOneProduct(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function removeOneProduct(req, res, next) {
   try {
-
-  } catch (error) {
-    next(error)
-  }
-}
-
-/** @type {import("express").RequestHandler} */
-async (req, res, next) => {
-  try {
-
+    res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)
   }
