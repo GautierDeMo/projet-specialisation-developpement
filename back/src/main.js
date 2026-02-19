@@ -1,19 +1,20 @@
 /** express requirements */
 import express from 'express'
 import cors from 'cors'
-import corsOptions, { publicCorsOptions } from './config/cors.config.js'
+import dynamicCorsOptions from './config/cors.config.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()
 
+app.use(cors(dynamicCorsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.get('/', cors(corsOptions), (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/api/stats', cors(publicCorsOptions), (req, res) => {
+app.get('/api/stats', (req, res) => {
   res.json({ message: 'HELLO WORLD' })
 })
 
