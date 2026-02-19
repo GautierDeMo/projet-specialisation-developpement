@@ -1,5 +1,14 @@
 import { prisma } from "../orm/client.js"
 
+export async function deleteProduct(params) {
+  return await prisma.product.delete({
+    where: params,
+    select: {
+      name: true
+    }
+  })
+}
+
 export async function findProducts() {
   return await prisma.product.findMany()
 }

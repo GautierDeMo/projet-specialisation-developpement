@@ -1,5 +1,5 @@
 import express from 'express'
-import { postProduct, removeOneProduct, searchProducts, getProductById, getProducts, patchProductById } from './product.controller.js'
+import { postProduct, searchProducts, getProductById, getProducts, patchProductById, deleteProductById } from './product.controller.js'
 import { validate } from '../middlewares/validate.js'
 import { ProductDTO } from './product.dto.js'
 
@@ -15,8 +15,8 @@ productsRouter.get('/search', searchProducts)
 productsRouter.get('/:id', getProductById)
 
 /** Authenticated routes */
-productsRouter.post('', validate(ProductDTO) , postProduct)
+productsRouter.post('', validate(ProductDTO), postProduct)
 
 productsRouter.patch('/:id', patchProductById)
 
-productsRouter.delete('/:id', removeOneProduct)
+productsRouter.delete('/:id', deleteProductById)

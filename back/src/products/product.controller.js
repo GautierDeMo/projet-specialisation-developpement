@@ -1,5 +1,16 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { findProducts, findProduct, saveProduct, productCheck, updateProduct } from "./product.service.js"
+import { findProducts, findProduct, saveProduct, productCheck, updateProduct, deleteProduct } from "./product.service.js"
+
+/** @type {import("express").RequestHandler} */
+export async function deleteProductById(req, res, next) {
+  try {
+    await productCheck({ id: Number(req.params.id) })
+    const productToDelete = await deleteProduct({ id: Number(req.params.id) })
+    res.status(200).json({ msg: `Here is the deleted product: ${productToDelete.name}` })
+  } catch (error) {
+    next(error)
+  }
+}
 
 /** @type {import("express").RequestHandler} */
 export async function getProducts(req, res, next) {
@@ -62,15 +73,6 @@ export async function postProduct(req, res, next) {
 
 /** @type {import("express").RequestHandler} */
 export async function searchProducts(req, res, next) {
-  try {
-    res.json({ msg: "Here is a product" })
-  } catch (error) {
-    next(error)
-  }
-}
-
-/** @type {import("express").RequestHandler} */
-export async function removeOneProduct(req, res, next) {
   try {
     res.json({ msg: "Here is a product" })
   } catch (error) {
