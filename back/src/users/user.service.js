@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt'
+import { prisma } from '../db/client.js'
 
 /**
  * Use bcrypt to hash a string
@@ -21,4 +22,17 @@ export async function hash(text) {
  */
 export async function compare(text, hashedText) {
   return await bcrypt.compare(text, hashedText)
+}
+
+/**
+ * Use prisma to add a new user in database
+ *
+ * @param {string} email
+ * @param {string} password - hashed password
+ * @returns {Promise<User>}
+ */
+export async function create(email, password) {
+  return await prisma.user.create({
+    data: { email, password },
+  })
 }
