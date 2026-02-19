@@ -7,7 +7,7 @@ export function authenticate(req, res, next) {
     return next({ status: 401, message: 'Access token required' })
   }
 
-  const token = authHeader.slice(7)
+  const token = authHeader.slice(7) // Remove 'Bearer ' from the string to fetch only the token
 
   try {
     const payload = jwt.verify(token, process.env.ACCESS_SECRET_KEY)

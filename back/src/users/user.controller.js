@@ -86,7 +86,7 @@ export async function login(req, res, next) {
   }
 }
 
-export async function refresh(req, res, next) {
+export async function refreshToken(req, res, next) {
   const refreshToken = req.cookies.refreshToken
 
   try {
