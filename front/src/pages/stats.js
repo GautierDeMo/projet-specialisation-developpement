@@ -1,7 +1,4 @@
-const fetchStats = async () => {
-  const response = await fetch('http://localhost:3000/api/stats')
-  return await response.json()
-}
+import { fetchStats } from '../api/stats.js'
 
 export default async function render(container) {
   container.innerHTML = `
@@ -32,7 +29,7 @@ export default async function render(container) {
 
     card.innerHTML = `
       <h2 class="text-xl font-semibold mb-2 text-gray-700">${nom}</h2>
-      <p class="text-gray-500">${compte} produits</p>
+      <p class="text-gray-500">${compte} produit${compte > 1 ? 's' : ''}</p>
     `
 
     statsContainer.appendChild(card)
