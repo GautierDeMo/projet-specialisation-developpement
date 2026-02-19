@@ -2,22 +2,22 @@
 
 ## Kifékoa
 
-| Nom     | Tâches                                                                                                      |
-| :------ | :---------------------------------------------------------------------------------------------------------- |
-| Solène  |                                                                                                             |
-| Jérémy  |                                                                                                             |
-| Mickaël |                                                                                                             |
-| Gautier | Repo Github, folder front & back, docker compose et postgresql, initialisation express & vite, Début README |
+| Nom     | Tâches                                                                                                                             |
+| :------ | :--------------------------------------------------------------------------------------------------------------------------------- |
+| Solène  | API de Statistiques, intégratrice des vues                                                                                         |
+| Jérémy  | ~~ajout de prettier, commande unique pour le lancement du projet, modification du README en conséquence~~, mise en place des CSP   |
+| Mickaël | Mise en place de l'authentification ET des tests via JEST                                                                          |
+| Gautier | ~~Repo Github, folder front & back, docker compose et postgresql, initialisation express & vite, Début README~~, CRUD des produits |
 
 ## Tâches à réaliser
 
-- Créer le repo sur GitHub
-- Créer un folder pour le front
-- Créer un folder pour le back
-- Utiliser postgreSQL avec un docker-compose
-- Express pour le back
-- Vite js pour le front
-- Monorepo front + back sur GitHub
+- ~~Créer le repo sur GitHub~~
+- ~~Créer un folder pour le front~~
+- ~~Créer un folder pour le back~~
+- ~~Utiliser postgreSQL avec un docker-compose~~
+- ~~Express pour le back~~
+- ~~Vite js pour le front~~
+- ~~Monorepo front + back sur GitHub~~
 - Mettre à dispo une url de statistiques (OPEN BAR)
 - Utilisation de Jest pour les tests soit sur le CRUD soit l'auth
 - Faire un README.md

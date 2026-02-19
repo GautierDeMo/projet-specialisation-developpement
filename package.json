@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"pnpm --filter back dev\" \"pnpm --filter front dev\" --names \"BACK,FRONT\" --prefix-colors \"blue,magenta\"",
-    "db:start": "docker-compose up -d",
-    "db:stop": "docker-compose down",
-    "db:reset": "docker-compose down -v && docker-compose up -d",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down",
+    "db:reset": "docker compose down -v && docker-compose up -d",
     "start": "pnpm db:start && pnpm dev",
     "prisma:studio": "pnpm --filter back prisma studio",
     "prisma:migrate": "pnpm --filter back prisma migrate dev",

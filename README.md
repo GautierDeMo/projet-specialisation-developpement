@@ -6,9 +6,9 @@
 
 ### 1. Installer toutes les dépendances
 
-#### Méthode rapide (recommandée)
+#### Méthode automagique (recommandée)
 
-pnpm install
+- Depuis la racine du projet : `pnpm install`
 
 #### Méthode manuelle
 
@@ -19,18 +19,7 @@ pnpm install
 
 ### 2. Configurer les variables d'environnement (voir ci-dessous)
 
-### 3. Lancer tout (BDD + Backend + Frontend)
-
-pnpm start
-
-L'application sera accessible sur :
-
-- **Frontend** : http://localhost:5000
-- **Backend** : http://localhost:3000
-
-## Variables d'environnement
-
-### Fichier `.env` (à la racine du projet)
+#### Fichier `.env` (à la racine du projet)
 
 Copier le fichier `.env.example` et le renommer en `.env`, puis modifier les variables avec les valeurs souhaitées pour la base de données PostgreSQL :
 
@@ -40,7 +29,7 @@ POSTGRES_PASSWORD=<password>
 POSTGRES_DB=<db>
 ```
 
-### Fichier `back/.env`
+#### Fichier `back/.env`
 
 Copier le fichier `back/.env.example` et le renommer en `back/.env`, puis modifier :
 
@@ -55,13 +44,22 @@ JWT_SECRET=dev_secret_change_in_production
 PORT=3000
 ```
 
-### Fichier `front/.env`
+#### Fichier `front/.env`
 
 Copier le fichier `front/.env.example` et le renommer en `front/.env` :
 
 ```env
 VITE_API_URL=http://localhost:3000
 ```
+
+### 3. Lancer tout (BDD + Backend + Frontend)
+
+pnpm start
+
+L'application sera accessible sur :
+
+- **Frontend** : <http://localhost:5000>
+- **Backend** : <http://localhost:3000>
 
 ## Base de données
 
