@@ -3,6 +3,6 @@ import { getStats } from './stats.controller.js'
 
 const router = express.Router()
 
-router.get('/categories', getStats)
+router.get('/', getStats)
 
 export default router
