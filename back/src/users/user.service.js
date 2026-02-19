@@ -36,3 +36,16 @@ export async function create(email, password) {
     data: { email, password },
   })
 }
+
+/**
+ * Use prisma to find a user by his email
+ *
+ * @param {string} email
+ *
+ * @returns {Promise<User>}
+ */
+export async function findByEmail(email) {
+  return await prisma.user.findUnique({
+    where: { email },
+  })
+}
