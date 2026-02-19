@@ -42,10 +42,10 @@ export async function postProduct(req, res, next) {
       price: Number(price)
     })
     if (!product) {
-      const newProduct = saveProduct({ category, description, name, price })
+      const newProduct = await saveProduct({ category, description, name, price })
       return res.json({ msg: `New product created: ${name}`, product: newProduct })
     }
-    return res.status(400).json("Product already exists")
+    return res.status(400).json({ msg: "Product already exists", product: product })
   } catch (error) {
     next(error)
   }

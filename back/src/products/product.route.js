@@ -1,7 +1,7 @@
 import express from 'express'
 import { postProduct, removeOneProduct, searchProducts, getProductById, getProducts, updateOneProduct } from './product.controller.js'
-// import { validate } from '../middlewares/validate.js'
-// import { ProductDTO } from './product.dto.js'
+import { validate } from '../middlewares/validate.js'
+import { ProductDTO } from './product.dto.js'
 
 export const productsRouter = express.Router()
 
@@ -15,7 +15,7 @@ productsRouter.get('/search', searchProducts)
 productsRouter.get('/:id', getProductById)
 
 /** Authenticated routes */
-productsRouter.post('', /** validate(ProductDTO) ,*/ postProduct)
+productsRouter.post('', validate(ProductDTO) , postProduct)
 
 productsRouter.patch('/:id', updateOneProduct)
 

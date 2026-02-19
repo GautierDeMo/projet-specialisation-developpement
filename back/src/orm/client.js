@@ -1,4 +1,3 @@
-// TODO: Cela peut être à adapter à notre projet, vient de la doc de Prisma
 // https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresql
 
 import 'dotenv/config'
