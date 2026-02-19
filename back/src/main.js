@@ -2,6 +2,7 @@
 import express from 'express'
 import cors from 'cors'
 import dynamicCorsOptions from './config/cors.config.js'
+import cspRoutes from './routes/csp.routes.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 app.get('/api/stats', (req, res) => {
   res.json({ message: 'HELLO WORLD' })
 })
+
+app.use('/api', cspRoutes)
 
 app.listen(PORT, () => {
   console.log(`Back app listening on port ${PORT}`)
