@@ -3,7 +3,7 @@ const allowedOrigins = ['http://localhost:5000']
 var dynamicCorsOptions = function (req, callback) {
   let corsOptions
 
-  if (req.path.startsWith('/api/pages')) {
+  if (req.path.startsWith('/api/stats')) {
     corsOptions = {
       origin: '*',
       methods: ['GET', 'OPTIONS'],

@@ -1,4 +1,4 @@
-import { prisma } from '../orm/client.js'
+import { prisma } from "../orm/client.js"
 
 /**
  * Récupère les statistiques des catégories
