@@ -11,9 +11,6 @@ GET http://localhost:3000/products
 ### Show one PRODUCT
 GET http://localhost:3000/products/{{productId}}
 
-### Search PRODUCTS
-GET http://localhost:3000/products/search
-
 ################################# POST ROUTES ##################################
 
 ### Create one PRODUCT
@@ -26,6 +23,14 @@ Content-Type: application/json
   "images": [],
   "name": "Râteau en plastique",
   "price": 13.5
+}
+
+### Search PRODUCTS
+POST http://localhost:3000/products/search
+Content-Type: application/json
+
+{
+  "category": "Sport"
 }
 
 ################################# PATCH ROUTES #################################
