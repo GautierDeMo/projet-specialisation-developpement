@@ -4,7 +4,7 @@ import { prisma } from '../db/client.js'
 import jwt from 'jsonwebtoken'
 
 /**
- * Hash a token using SHA-256 (deterministic, suitable for DB lookups)
+ * Hash a token using SHA-256
  *
  * @param {string} token
  *
@@ -26,7 +26,7 @@ export async function hash(text) {
 }
 
 /**
- * Use bcrypt to compare a string and a hashed string
+ * Use bcrypt to compare a string to a hashed string
  *
  * @param {string} text
  * @param {string} hashedText
@@ -81,7 +81,7 @@ export function generatePayload(user) {
  *
  * @param {Payload} payload
  * @param {string} secret
- * @param {string} expiration ex: '1h', '5min'
+ * @param {string} expiration ex: '5min'
  *
  * @returns { Promise<string> } the json web token
  */
@@ -107,7 +107,7 @@ export async function saveRefreshToken(userId, token, expiredAt) {
 /**
  * Find a refresh token in database
  *
- * @param {string} token - The refresh token string to look up
+ * @param {string} token
  *
  * @returns {Promise<Token | null>}
  */
@@ -120,7 +120,7 @@ export async function findRefreshToken(token) {
 /**
  * Delete a refresh token from database (used on logout or rotation)
  *
- * @param {string} token - The refresh token string to delete
+ * @param {string} token
  *
  * @returns {Promise<{ count: number }>}
  */
