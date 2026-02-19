@@ -15,3 +15,8 @@ export const RegisterDTO = z.object({
   email: z.email(),
   password: passwordSchema,
 })
+
+export const LoginDTO = z.object({
+  email: z.email(),
+  password: z.string(),
+})

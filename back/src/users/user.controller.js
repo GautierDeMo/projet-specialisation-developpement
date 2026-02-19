@@ -28,3 +28,30 @@ export async function register(req, res, next) {
     next(error)
   }
 }
+
+export async function login(req, res, next) {
+  try {
+    const user = await findByEmail(req.body.email)
+
+    if (!user) return next({ status: 401, message: 'Invalid credentials' })
+
+    const isPasswordCorrect = await compare(req.body.password, user.password)
+
+    if (!isPasswordCorrect)
+      return next({ status: 401, message: 'Invalid credentials' })
+
+    const payload = generatePayload(user)
+    const token = generateToken(payload, process.env.ACCESS_SECRET_KEY, '1h')
+    const { id, email } = user
+
+    return res.status(200).json({
+      user: {
+        id,
+        email,
+      },
+      accessToken: token,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
