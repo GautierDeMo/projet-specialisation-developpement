@@ -1,6 +1,18 @@
 import * as bcrypt from 'bcrypt'
+import crypto from 'crypto'
 import { prisma } from '../db/client.js'
 import jwt from 'jsonwebtoken'
+
+/**
+ * Hash a token using SHA-256 (deterministic, suitable for DB lookups)
+ *
+ * @param {string} token
+ *
+ * @returns {string} The hex-encoded SHA-256 hash
+ */
+function hashToken(token) {
+  return crypto.createHash('sha256').update(token).digest('hex')
+}
 
 /**
  * Use bcrypt to hash a string
@@ -44,7 +56,7 @@ export async function create(email, password) {
  *
  * @param {string} email
  *
- * @returns {Promise<User>}
+ * @returns {Promise<User | null>}
  */
 export async function findByEmail(email) {
   return await prisma.user.findUnique({
@@ -75,4 +87,45 @@ export function generatePayload(user) {
  */
 export function generateToken(payload, secret, expiration) {
   return jwt.sign(payload, secret, { expiresIn: expiration })
+}
+
+/**
+ * Save a refresh token in database linked to a user
+ *
+ * @param {number} userId
+ * @param {string} token - The refresh token string
+ * @param {Date} expiredAt - Expiration date of the token
+ *
+ * @returns {Promise<Token>}
+ */
+export async function saveRefreshToken(userId, token, expiredAt) {
+  return await prisma.token.create({
+    data: { userId, token: hashToken(token), expiredAt },
+  })
+}
+
+/**
+ * Find a refresh token in database
+ *
+ * @param {string} token - The refresh token string to look up
+ *
+ * @returns {Promise<Token | null>}
+ */
+export async function findRefreshToken(token) {
+  return await prisma.token.findFirst({
+    where: { token: hashToken(token) },
+  })
+}
+
+/**
+ * Delete a refresh token from database (used on logout or rotation)
+ *
+ * @param {string} token - The refresh token string to delete
+ *
+ * @returns {Promise<{ count: number }>}
+ */
+export async function deleteRefreshToken(token) {
+  return await prisma.token.deleteMany({
+    where: { token: hashToken(token) },
+  })
 }
