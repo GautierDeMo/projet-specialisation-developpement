@@ -37,10 +37,12 @@ Copier le fichier `back/.env.example` et le renommer en `back/.env`, puis modifi
   - Format : `postgresql://<user>:<password>@localhost:5432/<db>?schema=public`
   - ⚠️ Utiliser les **mêmes valeurs** que dans le `.env` racine
   - Exemple : `postgresql://devuser:devpassword@localhost:5432/devdb?schema=public`
+- `ACCESS_SECRET_KEY`: Clé secrète nécessaire à la génération du JWT
+  - Pour plus de sécurité, utiliser une clé générée avec openssl: `openssl genrsa -out private.key 2048`
 
 ```env
 DATABASE_URL="postgresql://<user>:<password>@localhost:5432/<db>?schema=public"
-JWT_SECRET=dev_secret_change_in_production
+ACCESS_SECRET_KEY="secret_key"
 PORT=3000
 ```
 
