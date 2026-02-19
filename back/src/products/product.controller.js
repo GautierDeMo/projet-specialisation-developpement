@@ -1,5 +1,5 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { findProducts, findProduct, saveProduct } from "./product.service.js"
+import { findProducts, findProduct, saveProduct, productCheck } from "./product.service.js"
 
 /** @type {import("express").RequestHandler} */
 export async function getProducts(req, res, next) {
@@ -19,14 +19,12 @@ export async function getProducts(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function getProductById(req, res, next) {
   try {
-    const product = await findProduct({ id: Number(req.params.id) })
-
-    if (!product) {
-      res.status(404).json({ msg: "Product not found" })
-    }
-
+    const product = await productCheck({ id: Number(req.params.id) })
     return res.status(200).json({ msg: "Here is our product", product: product })
   } catch (error) {
+    if (error.message === "Not found") {
+      return res.status(404).json({ msg: "Product not found" })
+    }
     next(error)
   }
 }
@@ -35,17 +33,17 @@ export async function getProductById(req, res, next) {
 export async function postProduct(req, res, next) {
   try {
     const { category, description, name, price } = req.body
-    const product = await findProduct({
+    const existingProduct = await findProduct({
       category: category,
       description: description,
       name: name,
       price: Number(price)
     })
-    if (!product) {
-      const newProduct = await saveProduct({ category, description, name, price })
-      return res.json({ msg: `New product created: ${name}`, product: newProduct })
+    if (existingProduct) {
+      return res.status(400).json({ msg: "Product already exists", product: existingProduct })
     }
-    return res.status(400).json({ msg: "Product already exists", product: product })
+    const newProduct = await saveProduct({ category, description, name, price })
+    return res.json({ msg: `New product created: ${name}`, product: newProduct })
   } catch (error) {
     next(error)
   }
@@ -61,8 +59,9 @@ export async function searchProducts(req, res, next) {
 }
 
 /** @type {import("express").RequestHandler} */
-export async function updateOneProduct(req, res, next) {
+export async function patchProduct(req, res, next) {
   try {
+    const product = await productCheck({ id: Number(req.params.id) })
     res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)
