@@ -100,6 +100,11 @@ export async function refresh(req, res, next) {
       return next({ status: 403, message: 'Invalid refresh token' })
     }
 
+    if (stored.expiredAt < new Date()) {
+      await deleteRefreshToken(refreshToken)
+      return next({ status: 403, message: 'Invalid refresh token' })
+    }
+
     const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET_KEY)
 
     // Token rotation: delete old token, issue a new one
