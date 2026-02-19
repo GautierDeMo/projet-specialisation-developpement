@@ -1,5 +1,5 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { prisma } from "../db/client.js"
+import { prisma } from "../orm/client"
 
 /** @type {import("express").RequestHandler} */
 export async function showProducts(req, res, next) {
