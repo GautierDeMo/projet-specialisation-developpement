@@ -13,16 +13,23 @@ export async function findProduct(params) {
   })
 }
 
-export async function saveProduct(params) {
-  return await prisma.product.create({
-    data: { ...params }
-  })
-}
-
 export async function productCheck(params) {
   const product = await findProduct(params)
   if (!product) {
     throw new Error("Not found")
   }
   return product
+}
+
+export async function saveProduct(params) {
+  return await prisma.product.create({
+    data: { ...params }
+  })
+}
+
+export async function updateProduct(body, params) {
+  return await prisma.product.update({
+    where: params,
+    data: body
+  })
 }

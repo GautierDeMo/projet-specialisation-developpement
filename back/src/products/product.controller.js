@@ -1,5 +1,5 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { findProducts, findProduct, saveProduct, productCheck } from "./product.service.js"
+import { findProducts, findProduct, saveProduct, productCheck, updateProduct } from "./product.service.js"
 
 /** @type {import("express").RequestHandler} */
 export async function getProducts(req, res, next) {
@@ -30,6 +30,17 @@ export async function getProductById(req, res, next) {
 }
 
 /** @type {import("express").RequestHandler} */
+export async function patchProductById(req, res, next) {
+  try {
+    await productCheck({ id: Number(req.params.id) })
+    const updatedProduct = await updateProduct(req.body, { id: Number(req.params.id) })
+    return res.status(200).json({ msg: `Here is the updated product: ${updatedProduct.name}`, product: updatedProduct })
+  } catch (error) {
+    next(error)
+  }
+}
+
+/** @type {import("express").RequestHandler} */
 export async function postProduct(req, res, next) {
   try {
     const { category, description, name, price } = req.body
@@ -52,16 +63,6 @@ export async function postProduct(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function searchProducts(req, res, next) {
   try {
-    res.json({ msg: "Here is a product" })
-  } catch (error) {
-    next(error)
-  }
-}
-
-/** @type {import("express").RequestHandler} */
-export async function patchProduct(req, res, next) {
-  try {
-    const product = await productCheck({ id: Number(req.params.id) })
     res.json({ msg: "Here is a product" })
   } catch (error) {
     next(error)

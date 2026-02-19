@@ -35,7 +35,7 @@ PATCH http://localhost:3000/products/{{productId}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Fouet en inox"
+  "description": "Non"
 }
 
 ################################# DELETE ROUTES ################################
