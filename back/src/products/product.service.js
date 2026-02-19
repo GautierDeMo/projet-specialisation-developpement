@@ -1,4 +1,4 @@
-import { prisma } from "../db/client.js"
+import { prisma } from "../orm/client.js"
 
 export async function findProducts() {
   return await prisma.product.findMany()
