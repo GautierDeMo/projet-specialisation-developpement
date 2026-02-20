@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser'
 import { errorHandler } from './middlewares/errorHandler.js'
 import cors from 'cors'
 import dynamicCorsOptions from './config/cors.config.js'
-import statsRoutes from './stats/stats.routes.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()

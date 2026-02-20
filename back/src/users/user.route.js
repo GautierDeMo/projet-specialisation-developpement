@@ -10,4 +10,4 @@ router.post('/login', validate(LoginDTO), login)
 router.post('/refresh', refreshToken)
 router.post('/logout', logout)
 
-export { router as UserRouter }
+export { router as userRouter }
