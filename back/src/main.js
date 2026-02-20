@@ -9,12 +9,13 @@ import cspRoutes from './routes/csp.routes.js'
 import statsRoutes from './stats/stats.routes.js'
 import { createServer } from './config/server.config.js'
 import { hstsMiddleware } from './middlewares/hsts.middleware.js'
+import { cspBodyParser } from './middlewares/cspBodyParser.js'
 
 const PORT = process.env.PORT || 3000
 const app = express()
 
 app.use(hstsMiddleware)
-app.use(express.json())
+app.use(cspBodyParser)
 app.use(cors(dynamicCorsOptions))
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())

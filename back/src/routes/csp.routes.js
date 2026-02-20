@@ -7,15 +7,7 @@ import {
 
 const router = express.Router()
 
-const cspBodyParser = express.json({
-  type: [
-    'application/json',
-    'application/csp-report',
-    'application/reports+json',
-  ],
-})
-
-router.post('/csp/report', cspBodyParser, receiveCSPReport)
+router.post('/csp/report', receiveCSPReport)
 router.get('/csp/reports', getCSPReports)
 router.delete('/csp/reports', deleteCSPReports)
 
