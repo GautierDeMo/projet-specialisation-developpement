@@ -8,7 +8,8 @@ dotenv.config()
 
 export default defineConfig(async () => {
   const { https, protocol } = await getSSLConfig()
-  const backendUrl = `${protocol}://localhost:3000`
+  const backendHost = process.env.VITE_BACKEND_HOST || 'localhost:3000'
+  const backendUrl = `${protocol}://${backendHost}`
 
   return {
     plugins: [
@@ -50,8 +51,8 @@ export default defineConfig(async () => {
                 "form-action 'self'",
                 "frame-ancestors 'none'",
                 'upgrade-insecure-requests',
-                // "require-trusted-types-for 'script'",
-                // 'trusted-types default',
+                "require-trusted-types-for 'script'",
+                'trusted-types default',
                 `report-uri ${backendUrl}/api/csp/report`,
               ].join('; ')
             )

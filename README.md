@@ -105,17 +105,18 @@ openssl rand -base64 32  # Pour REFRESH_SECRET_KEY
 
 Copier `front/.env.example` en `front/.env` :
 
-**Avec HTTPS (certificats générés) :**
-
 ```env
-VITE_API_URL=https://localhost:3000
+# Host du backend (sans protocole)
+# Le protocole (http/https) est détecté automatiquement
+VITE_BACKEND_HOST=localhost:3000
 ```
 
-**Ou HTTP (fallback si pas de certificats) :**
+**Le protocole est détecté automatiquement :**
 
-```env
-VITE_API_URL=http://localhost:3000
-```
+- Frontend HTTPS → Backend HTTPS
+- Frontend HTTP → Backend HTTP
+
+Pas besoin de changer cette valeur selon le mode !
 
 ### 4. Appliquer les migrations Prisma
 
@@ -149,6 +150,8 @@ Le projet utilise **devcert** pour activer HTTPS en développement local.
 
 Un cadenas 🔒 apparaîtra dans la barre d'adresse du navigateur.
 
+**Le protocole est détecté automatiquement** - pas besoin de configuration manuelle !
+
 ### Sans certificats (fallback HTTP)
 
 Si la génération échoue, le projet fonctionne en HTTP :
@@ -158,10 +161,7 @@ Si la génération échoue, le projet fonctionne en HTTP :
 ⚠️  Frontend HTTP : http://localhost:5000
 ```
 
-**Adapter `front/.env` selon le mode :**
-
-- HTTPS : `VITE_API_URL=https://localhost:3000`
-- HTTP : `VITE_API_URL=http://localhost:3000`
+**Le protocole est toujours détecté automatiquement** - backend et frontend restent synchronisés !
 
 ---
 
@@ -256,9 +256,10 @@ Autoriser l'installation de la CA quand demandé.
 
 ```bash
 rm -rf .cert/
+pnpm start
 ```
 
-Modifier `front/.env` : `VITE_API_URL=http://localhost:3000`
+Le projet démarrera automatiquement en HTTP. Le frontend s'adaptera automatiquement.
 
 ### Erreur "Prisma Client is not generated"
 
@@ -282,7 +283,26 @@ pnpm db:start
 - Vérifier `DATABASE_URL` dans `back/.env` (mêmes valeurs que `.env` racine)
 - Réappliquer les migrations : `cd back && pnpm prisma migrate dev`
 
-## Sécurité
+### Port 3000 ou 5000 déjà utilisé
+
+```bash
+# Trouver le processus
+lsof -i :3000  # ou :5000
+
+# Tuer le processus
+kill -9 <PID>
+```
+
+Windows :
+
+```bash
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+```
+
+---
+
+## 🛡️ Sécurité
 
 Le projet implémente les mesures de sécurité suivantes :
 
@@ -292,16 +312,17 @@ Le projet implémente les mesures de sécurité suivantes :
 - ✅ **Trusted Types** - Protection XSS DOM
 - ✅ **CORS** configuré et restreint
 - ✅ **security.txt** (RFC 9116) : `/.well-known/security.txt`
+- ✅ **Détection automatique du protocole** - Frontend et backend toujours synchronisés
 
 **Score de sécurité : 100/100**
 
-**Documentation complète :** [`SECURITY_TESTS.md`](./SECURITY_TESTS.md)
+**Documentation complète :** [`docs/SECURITY_TESTS.md`](./docs/SECURITY_TESTS.md)
 
 ---
 
-## Tests de sécurité
+## 🧪 Tests de sécurité
 
-Voir le guide complet : [`SECURITY_TESTS.md`](./SECURITY_TESTS.md)
+Voir le guide complet : [`docs/SECURITY_TESTS.md`](./docs/SECURITY_TESTS.md)
 
 **Tests rapides :**
 
@@ -329,8 +350,7 @@ projet-specialisation-developpement/
 │   │   └── .well-known/
 │   │       └── security.txt
 │   ├── src/
-│   │   ├── config/         # Configuration SSL
-│   │   ├── middlewares/    # (Vite uniquement)
+│   │   ├── config/         # Configuration SSL & API
 │   │   ├── pages/          # Pages de l'app
 │   │   └── utils/          # Utilitaires (Trusted Types)
 │   ├── vite.config.js      # Config Vite avec HTTPS et CSP
