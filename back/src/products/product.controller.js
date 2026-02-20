@@ -60,10 +60,7 @@ export async function postProduct(req, res, next) {
     const { category, description, name, price, imageUrl } = req.body
 
     const existingProduct = await findProduct({
-      category: category,
-      description: description,
       name: name,
-      price: Number(price)
     })
 
     if (existingProduct) {

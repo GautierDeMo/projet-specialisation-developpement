@@ -32,7 +32,7 @@ model Product {
   category    String
   description String
   images      Image[]
-  name        String
+  name        String  @unique
   price       Float
 
   createdAt DateTime @default(now()) @map("created_at")
