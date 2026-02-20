@@ -30,7 +30,7 @@ Ce document explique comment tester les mesures de sécurité implémentées dan
 
 ### Étape 1 : Modifier `front/plugins/security.plugin.js`
 
-**Cherche ces lignes dans la configuration CSP :**
+**Chercher ces lignes dans la configuration CSP :**
 
 ```javascript
 'upgrade-insecure-requests',
@@ -39,7 +39,7 @@ Ce document explique comment tester les mesures de sécurité implémentées dan
 `report-uri ${backendUrl}/api/csp/report`,
 ```
 
-**Commente les deux lignes Trusted Types :**
+**Commenter les deux lignes Trusted Types :**
 
 ```javascript
 'upgrade-insecure-requests',
