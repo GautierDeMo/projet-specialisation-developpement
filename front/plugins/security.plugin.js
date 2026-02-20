@@ -38,8 +38,8 @@ function createCspMiddleware(backendUrl) {
         "form-action 'self'",
         "frame-ancestors 'none'",
         'upgrade-insecure-requests',
-        "require-trusted-types-for 'script'",
-        'trusted-types default',
+        // "require-trusted-types-for 'script'",
+        // 'trusted-types default',
         `report-uri ${backendUrl}/api/csp/report`,
       ].join('; ')
     )

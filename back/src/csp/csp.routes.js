@@ -3,7 +3,7 @@ import {
   receiveCSPReport,
   getCSPReports,
   deleteCSPReports,
-} from '../csp/csp.controller.js'
+} from './csp.controller.js'
 
 const router = express.Router()
 
