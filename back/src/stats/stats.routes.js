@@ -3,4 +3,4 @@ import { getStats } from './stats.controller.js'
 
 export const statsRouter = express.Router()
 
-router.get('/', getStats)
+statsRouter.get('/', getStats)
