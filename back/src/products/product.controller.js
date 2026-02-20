@@ -1,4 +1,5 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
+import { saveImage } from "../images/image.service.js"
 import { findProduct, saveProduct, productCheck, updateProduct, deleteProduct, findAllProducts, productsCheck } from "./product.service.js"
 
 /** @type {import("express").RequestHandler} */
@@ -56,7 +57,7 @@ export async function patchProductById(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function postProduct(req, res, next) {
   try {
-    const { category, description, name, price } = req.body
+    const { category, description, name, price, imageUrl } = req.body
 
     const existingProduct = await findProduct({
       category: category,
@@ -64,13 +65,19 @@ export async function postProduct(req, res, next) {
       name: name,
       price: Number(price)
     })
-    
+
     if (existingProduct) {
       return res.status(400).json({ msg: "Product already exists", product: existingProduct })
     }
 
     const newProduct = await saveProduct({ category, description, name, price })
-    return res.json({ msg: `New product created: ${name}`, product: newProduct })
+
+    if (imageUrl) {
+      const newImage = await saveImage({ productId: newProduct.id, imageUrl })
+      return res.status(201).json({ msg: `New product created: ${name}`, product: newProduct, image: newImage })
+    }
+
+    return res.status(201).json({ msg: `New product created: ${name}`, product: newProduct })
   } catch (error) {
     next(error)
   }
