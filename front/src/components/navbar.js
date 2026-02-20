@@ -6,7 +6,13 @@ export function renderNavbar() {
   if (!navbar) return
 
   if (!authStore.isAuthenticated()) {
-    navbar.innerHTML = ''
+    navbar.innerHTML = `
+      <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-end">
+        <a href="#/login" class="text-sm text-blue-600 hover:underline font-medium">
+          Se connecter
+        </a>
+      </nav>
+    `
     return
   }
 
@@ -22,7 +28,8 @@ export function renderNavbar() {
     </nav>
   `
 
-  navbar.querySelector('#logout-btn').addEventListener('click', async () => {
+  navbar.querySelector('#logout-btn').addEventListener('click', async (e) => {
+    e.preventDefault()
     await logout()
     location.hash = '#/login'
   })
