@@ -28,7 +28,7 @@ Ce document explique comment tester les mesures de sécurité implémentées dan
 
 **Avant de lancer les tests d'attaques XSS, il faut désactiver temporairement Trusted Types.**
 
-### Étape 1 : Modifier `front/vite.config.js`
+### Étape 1 : Modifier `front/plugins/security.plugin.js`
 
 **Cherche ces lignes dans la configuration CSP :**
 
