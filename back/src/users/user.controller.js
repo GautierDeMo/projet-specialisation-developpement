@@ -126,7 +126,10 @@ export async function refreshToken(req, res, next) {
       '15m'
     )
 
-    return res.status(200).json({ accessToken: newAccessToken })
+    return res.status(200).json({
+      accessToken: newAccessToken,
+      user: { id: payload.sub, email: payload.email },
+    })
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       // Clean up the expired token from DB
