@@ -1,6 +1,11 @@
+import { authStore } from './store/auth.js'
+import { renderNavbar } from './components/navbar.js'
+
 const routes = {
-  '/': () => import('./pages/home.js'),
-  '/stats': () => import('./pages/stats.js'),
+  '/': { loader: () => import('./pages/home.js') },
+  '/stats': { loader: () => import('./pages/stats.js') },
+  '/login': { loader: () => import('./pages/login.js'), guard: 'guest' },
+  '/register': { loader: () => import('./pages/register.js'), guard: 'guest' },
 }
 
 function matchRoute(path) {
@@ -9,11 +14,11 @@ function matchRoute(path) {
 
 export async function navigate() {
   const path = location.hash.slice(1) || '/'
-  const loader = matchRoute(path)
+  const route = matchRoute(path)
 
   const app = document.getElementById('app')
 
-  if (!loader) {
+  if (!route) {
     app.innerHTML =
       '<h1 class="text-2xl font-bold text-center text-red-700 p-10">404 - Page introuvable</h1>' +
       '<div class="mt-12 flex justify-center">\n' +
@@ -24,8 +29,16 @@ export async function navigate() {
     return
   }
 
-  const { default: render } = await loader()
-  render(app)
+  // Guard: 'guest' routes redirect authenticated users to home
+  if (route.guard === 'guest' && authStore.isAuthenticated()) {
+    location.hash = '#/'
+    return
+  }
+
+  const { default: render } = await route.loader()
+
+  renderNavbar()
+  await render(app)
 }
 
 globalThis.addEventListener('hashchange', navigate)
