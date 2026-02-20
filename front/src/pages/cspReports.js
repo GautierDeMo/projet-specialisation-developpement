@@ -1,7 +1,7 @@
 import { cspService } from '../services/csp.service.js'
 import { createTrustedHTML } from '../utils/trustedTypes.js'
 
-export async function renderCspReports() {
+export default async function renderCspReports() {
   const app = document.querySelector('#app')
 
   const initialHTML = `

@@ -1,4 +1,4 @@
-import { prisma } from '../db/client.js'
+import { prisma } from '../orm/client.js'
 
 export const receiveCSPReport = async (req, res) => {
   try {

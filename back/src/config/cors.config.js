@@ -1,4 +1,4 @@
-const allowedOrigins = ['http://localhost:5000']
+const allowedOrigins = ['http://localhost:5000', 'https://localhost:5000']
 
 var dynamicCorsOptions = function (req, callback) {
   let corsOptions
@@ -8,6 +8,7 @@ var dynamicCorsOptions = function (req, callback) {
       origin: '*',
       methods: ['GET', 'OPTIONS'],
       optionsSuccessStatus: 204,
+      allowedHeaders: ['Content-Type', 'Authorization'],
     }
   } else {
     corsOptions = {

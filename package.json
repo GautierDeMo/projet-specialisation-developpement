@@ -8,6 +8,9 @@
     "db:stop": "docker compose down",
     "db:reset": "docker compose down -v && docker-compose up -d",
     "start": "pnpm db:start && pnpm dev",
+    "setup:https": "node scripts/setup-https.js",
+    "fix:devcert": "node scripts/fix-devcert.js",
+    "postinstall": "pnpm fix:devcert",
     "prisma:studio": "pnpm --filter back prisma studio",
     "prisma:migrate": "pnpm --filter back prisma migrate dev",
     "format": "prettier --write \"**/*.{js,json,md,css,html}\"",
@@ -15,6 +18,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.8.1"
   }
 }
