@@ -2,7 +2,6 @@
 import express from 'express'
 import { router } from './routes/route.js'
 import cookieParser from 'cookie-parser'
-import { UserRouter } from './users/user.route.js'
 import { errorHandler } from './middlewares/errorHandler.js'
 import cors from 'cors'
 import dynamicCorsOptions from './config/cors.config.js'
@@ -20,11 +19,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use(router)
-
-app.use('/user', UserRouter)
-
-app.use('/api/stats', statsRoutes)
+app.use('/api', router)
 
 app.use(errorHandler)
 
