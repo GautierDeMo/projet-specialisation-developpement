@@ -40,6 +40,7 @@ export async function login(email, password) {
 export async function logout() {
   try {
     await apiFetch('/user/logout', { method: 'POST' })
+    location.hash = '#/login'
   } finally {
     authStore.clear()
   }
