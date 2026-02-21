@@ -5,6 +5,10 @@ export async function saveImage({ productId, imageBase64 }) {
     data: {
       productId,
       data: buffer
+    },
+    select: {
+      productId: true,
+      url: true
     }
   })
 }
