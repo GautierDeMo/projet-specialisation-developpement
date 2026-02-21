@@ -4,7 +4,7 @@ import { renderNavbar } from './components/navbar.js'
 const routes = {
   '/': { loader: () => import('./pages/home.js') },
   '/stats': { loader: () => import('./pages/stats.js') },
-  '/csp-reports': { loader: () => import('./pages/cspReports.js') },
+  '/csp-reports': { loader: () => import('./pages/cspReports.js'), guard: 'auth' },
   '/login': { loader: () => import('./pages/login.js'), guard: 'guest' },
   '/register': { loader: () => import('./pages/register.js'), guard: 'guest' },
 }
@@ -32,6 +32,12 @@ export async function navigate() {
   // Guard: 'guest' routes redirect authenticated users to home
   if (route.guard === 'guest' && authStore.isAuthenticated()) {
     location.hash = '#/'
+    return
+  }
+
+  // Guard: 'auth' routes redirect unauthenticated users to login
+  if (route.guard === 'auth' && !authStore.isAuthenticated()) {
+    location.hash = '#/login'
     return
   }
 
