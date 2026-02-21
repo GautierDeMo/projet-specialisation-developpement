@@ -1,4 +1,4 @@
-import { cspService } from '../services/csp.service.js'
+import { csp } from '../api/csp.js'
 import { createTrustedHTML } from '../utils/trustedTypes.js'
 
 export default async function renderCspReports() {
@@ -28,7 +28,7 @@ export default async function renderCspReports() {
     ?.addEventListener('click', async () => {
       if (confirm('Êtes-vous sûr de vouloir supprimer tous les rapports ?')) {
         try {
-          await cspService.deleteAllReports()
+          await csp.deleteAllReports()
           alert('✅ Rapports supprimés avec succès')
           await loadReports()
         } catch (error) {
@@ -43,7 +43,7 @@ async function loadReports() {
   const container = document.querySelector('#reports-container')
 
   try {
-    const reports = await cspService.getReports()
+    const reports = await csp.getReports()
 
     let html = ''
 

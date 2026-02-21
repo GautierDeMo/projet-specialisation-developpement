@@ -1,6 +1,6 @@
-import { apiFetch } from '../api/client.js'
+import { apiFetch } from '../utils/client.js'
 
-export const cspService = {
+export const csp = {
   async getReports() {
     try {
       const response = await apiFetch('/csp/reports')

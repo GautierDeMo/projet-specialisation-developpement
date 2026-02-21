@@ -396,7 +396,7 @@ projet-specialisation-developpement/
 ## 👥 Équipe
 
 | Nom                       |
-|:--------------------------|
+| :------------------------ |
 | Solène Gouin              |
 | Jérémy Duflot             |
 | Mickaël Desclaux-Arramond |

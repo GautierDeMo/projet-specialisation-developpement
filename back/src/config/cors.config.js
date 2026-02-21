@@ -1,6 +1,9 @@
-const allowedOrigins = ['http://localhost:5000', 'https://localhost:5000']
+const allowedOrigins = new Set([
+  `http://localhost:${process.env.FRONT_PORT}`,
+  `https://localhost:${process.env.FRONT_PORT}`,
+])
 
-var dynamicCorsOptions = function (req, callback) {
+const dynamicCorsOptions = function (req, callback) {
   let corsOptions
 
   if (req.path.startsWith('/api/stats')) {
@@ -13,7 +16,7 @@ var dynamicCorsOptions = function (req, callback) {
   } else {
     corsOptions = {
       origin: (origin, cb) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.has(origin)) {
           cb(null, true)
         } else {
           cb(new Error('Not allowed by CORS'))

@@ -4,11 +4,11 @@ export async function saveImage({ productId, imageBase64 }) {
   return await prisma.image.create({
     data: {
       productId,
-      data: buffer
+      data: buffer,
     },
     select: {
       productId: true,
-      url: true
-    }
+      url: true,
+    },
   })
 }

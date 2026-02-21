@@ -1,6 +1,7 @@
 import { fetchStats } from '../api/stats.js'
 // N'oublie pas l'import de l'utilitaire !
 import { createTrustedHTML } from '../utils/trustedTypes.js'
+import { API_URL } from '../config/api.config.js'
 
 export default async function render(container) {
   // On utilise createTrustedHTML pour injecter le squelette de la page
@@ -9,6 +10,12 @@ export default async function render(container) {
       <h1 class="text-3xl font-bold mb-10 text-center text-gray-700">
         Statistiques des produits
       </h1>
+
+      <div class="text-center mb-5">
+        <a href="${API_URL}/stats" target="_blank" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+          Lien vers l'url des stats
+        </a>
+      </div>
 
       <div id="stats"
            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto px-4">
