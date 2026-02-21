@@ -1,10 +1,14 @@
 import { authStore } from './store/auth.js'
 import { renderNavbar } from './components/navbar.js'
+import { createTrustedHTML } from './utils/trustedTypes.js'
 
 const routes = {
   '/': { loader: () => import('./pages/home.js') },
   '/stats': { loader: () => import('./pages/stats.js') },
-  '/csp-reports': { loader: () => import('./pages/cspReports.js'), guard: 'auth' },
+  '/csp-reports': {
+    loader: () => import('./pages/cspReports.js'),
+    guard: 'auth',
+  },
   '/login': { loader: () => import('./pages/login.js'), guard: 'guest' },
   '/register': { loader: () => import('./pages/register.js'), guard: 'guest' },
 }
@@ -19,13 +23,14 @@ export async function navigate() {
   const route = matchRoute(path)
 
   if (!route) {
-    app.innerHTML =
+    app.innerHTML = createTrustedHTML(
       '<h1 class="text-2xl font-bold text-center text-red-700 p-10">404 - Page introuvable</h1>' +
-      '<div class="mt-12 flex justify-center">\n' +
-      '<a href="#/" class="text-gray-700 italic font-semibold hover:underline">\n' +
-      'Retour accueil\n        ' +
-      '</a>\n      ' +
-      '</div>\n'
+        '<div class="mt-12 flex justify-center">\n' +
+        '<a href="#/" class="text-gray-700 italic font-semibold hover:underline">\n' +
+        'Retour accueil\n        ' +
+        '</a>\n      ' +
+        '</div>\n'
+    )
     return
   }
 
