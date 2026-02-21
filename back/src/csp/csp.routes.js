@@ -1,14 +1,14 @@
-import express, { raw } from 'express'
+import { Router } from 'express'
 import {
   receiveCSPReport,
   getCSPReports,
   deleteCSPReports,
 } from './csp.controller.js'
 
-const router = express.Router()
+const router = Router()
 
-router.post('/csp/report', receiveCSPReport)
-router.get('/csp/reports', getCSPReports)
-router.delete('/csp/reports', deleteCSPReports)
+router.post('/report', receiveCSPReport)
+router.get('/reports', getCSPReports)
+router.delete('/reports', deleteCSPReports)
 
-export default router
+export { router as cspRouter }

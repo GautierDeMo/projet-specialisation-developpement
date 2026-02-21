@@ -16,13 +16,19 @@ describe('authenticate', () => {
   it('calls next with 401 when no Authorization header is present', () => {
     const next = jest.fn()
     authenticate(mockReq(null), {}, next)
-    expect(next).toHaveBeenCalledWith({ status: 401, message: 'Access token required' })
+    expect(next).toHaveBeenCalledWith({
+      status: 401,
+      message: 'Access token required',
+    })
   })
 
   it('calls next with 401 when the header does not start with "Bearer "', () => {
     const next = jest.fn()
     authenticate(mockReq('Basic sometoken'), {}, next)
-    expect(next).toHaveBeenCalledWith({ status: 401, message: 'Access token required' })
+    expect(next).toHaveBeenCalledWith({
+      status: 401,
+      message: 'Access token required',
+    })
   })
 
   it('attaches user to req and calls next() with no args for a valid token', () => {
@@ -50,7 +56,10 @@ describe('authenticate', () => {
 
     authenticate(mockReq(`Bearer ${token}`), {}, next)
 
-    expect(next).toHaveBeenCalledWith({ status: 401, message: 'Access token expired' })
+    expect(next).toHaveBeenCalledWith({
+      status: 401,
+      message: 'Access token expired',
+    })
   })
 
   it('calls next with 401 "Invalid access token" for a token with a wrong signature', () => {
@@ -63,6 +72,9 @@ describe('authenticate', () => {
 
     authenticate(mockReq(`Bearer ${token}`), {}, next)
 
-    expect(next).toHaveBeenCalledWith({ status: 401, message: 'Invalid access token' })
+    expect(next).toHaveBeenCalledWith({
+      status: 401,
+      message: 'Invalid access token',
+    })
   })
 })

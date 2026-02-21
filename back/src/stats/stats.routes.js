@@ -1,8 +1,8 @@
-import express from 'express'
+import { Router } from 'express'
 import { getStats } from './stats.controller.js'
 
-const router = express.Router()
+const router = Router()
 
 router.get('/', getStats)
 
-export default router
+export { router as statsRouter }

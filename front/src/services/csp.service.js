@@ -1,9 +1,9 @@
-import { API_URL } from '../config/api.config.js'
+import { apiFetch } from '../api/client.js'
 
 export const cspService = {
   async getReports() {
     try {
-      const response = await fetch(`${API_URL}/api/csp/reports`)
+      const response = await apiFetch('/csp/reports')
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`)
       }
@@ -16,7 +16,7 @@ export const cspService = {
 
   async deleteAllReports() {
     try {
-      const response = await fetch(`${API_URL}/api/csp/reports`, {
+      const response = await apiFetch('/csp/reports', {
         method: 'DELETE',
       })
       if (!response.ok) {

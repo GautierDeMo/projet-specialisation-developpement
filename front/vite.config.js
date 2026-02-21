@@ -8,7 +8,7 @@ dotenv.config()
 
 export default defineConfig(async () => {
   const { https, protocol } = await getSSLConfig()
-  const backendHost = process.env.VITE_BACKEND_HOST || 'localhost:3000'
+  const backendHost = process.env.VITE_API_URL || 'localhost:3000'
   const backendUrl = `${protocol}://${backendHost}`
 
   return {

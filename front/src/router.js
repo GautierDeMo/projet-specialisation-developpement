@@ -3,8 +3,8 @@ import { renderNavbar } from './components/navbar.js'
 
 const routes = {
   '/': { loader: () => import('./pages/home.js') },
-  '/csp-reports': { loader: () => import('./pages/cspReports.js') },
   '/stats': { loader: () => import('./pages/stats.js') },
+  '/csp-reports': { loader: () => import('./pages/cspReports.js') },
   '/login': { loader: () => import('./pages/login.js'), guard: 'guest' },
   '/register': { loader: () => import('./pages/register.js'), guard: 'guest' },
 }

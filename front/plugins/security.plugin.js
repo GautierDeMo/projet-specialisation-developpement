@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import crypto from 'node:crypto'
 
 // Fonction pour créer le middleware HSTS
 function createHstsMiddleware(protocol) {
@@ -51,7 +51,7 @@ function createCspMiddleware(backendUrl) {
 function injectNoncesIntoHtml(html) {
   const nonce = crypto.randomBytes(16).toString('base64')
 
-  html = html.replace(/<script/g, `<script nonce="${nonce}"`)
+  html = html.replaceAll('<script', `<script nonce="${nonce}"`)
 
   html = html.replace(
     '</head>',

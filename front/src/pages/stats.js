@@ -5,19 +5,13 @@ import { createTrustedHTML } from '../utils/trustedTypes.js'
 export default async function render(container) {
   // On utilise createTrustedHTML pour injecter le squelette de la page
   container.innerHTML = createTrustedHTML(`
-    <div class="bg-blue-50 min-h-screen py-10">
+    <div class=" min-h-screen py-10">
       <h1 class="text-3xl font-bold mb-10 text-center text-gray-700">
         Statistiques des produits
       </h1>
 
       <div id="stats"
            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto px-4">
-      </div>
-      
-      <div class="mt-12 flex justify-center">
-        <a href="#/" class="text-gray-700 italic font-semibold hover:underline">
-           Retour accueil
-        </a>
       </div>
     </div>
   `)

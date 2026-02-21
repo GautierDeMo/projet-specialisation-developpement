@@ -7,8 +7,11 @@ export function renderNavbar() {
 
   if (!authStore.isAuthenticated()) {
     navbar.innerHTML = `
-      <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-end">
-        <a href="#/login" class="text-sm text-blue-600 hover:underline font-medium">
+      <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
+          Retour accueil
+        </a>
+        <a href="#/login" class="text-sm text-blue-700 hover:underline font-medium">
           Se connecter
         </a>
       </nav>
@@ -21,8 +24,13 @@ export function renderNavbar() {
 
   navbar.innerHTML = `
     <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-      <span class="text-sm text-gray-600">${email}</span>
-      <button id="logout-btn" class="text-sm text-red-600 hover:underline font-medium">
+      <div class="flex items-center gap-4">
+        <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
+          Retour accueil
+        </a>
+        <span class="text-sm text-gray-600">${email}</span>
+      </div>
+      <button id="logout-btn" class="text-sm text-red-700 hover:underline font-medium">
         Se déconnecter
       </button>
     </nav>

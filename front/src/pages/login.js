@@ -1,9 +1,10 @@
 import { login } from '../api/auth.js'
+import { createTrustedHTML } from '../utils/trustedTypes.js'
 
 export default function render(container) {
-  container.innerHTML = `
-    <div class="min-h-screen flex items-center justify-center bg-gray-50">
-      <div class="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
+  container.innerHTML = createTrustedHTML(`
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="w-full max-w-md bg-gray-50 rounded-2xl shadow-md p-8">
         <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Connexion</h1>
 
         <form id="login-form" class="space-y-4">
@@ -48,7 +49,7 @@ export default function render(container) {
         </p>
       </div>
     </div>
-  `
+  `)
 
   const form = container.querySelector('#login-form')
   const errorMsg = container.querySelector('#error-msg')
