@@ -1,5 +1,5 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { saveImage } from "../images/image.service.js"
+import { urlToBase64 } from "../utils/utils.js"
 import { findProduct, saveProduct, productCheck, updateProduct, deleteProduct, findAllProducts, productsCheck } from "./product.service.js"
 
 /** @type {import("express").RequestHandler} */
@@ -57,7 +57,7 @@ export async function putProductById(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function postProduct(req, res, next) {
   try {
-    const { category, description, name, price, imageUrl } = req.body
+    const { category, description, name, price } = req.body
 
     const existingProduct = await findProduct({
       name: name,
@@ -67,36 +67,34 @@ export async function postProduct(req, res, next) {
       return res.status(400).json({ msg: "Product already exists", product: existingProduct })
     }
 
-    const newProduct = await saveProduct({ category, description, name, price })
+    const productData = { category, description, name, price }
 
-    if (imageUrl) {
-      const newImage = await saveImage({ productId: newProduct.id, imageUrl })
-      return res.status(201).json({ msg: `New product created: ${name}`, product: newProduct, image: newImage })
+    const urlBase64 = await urlToBase64(req.body.image.url)
+
+    if (req.body.image) {
+      productData.images = {
+        create: [{ url: req.body.image.url, urlBase64 }]
+      }
     }
 
-    return res.status(201).json({ msg: `New product created: ${name}`, product: newProduct })
+    const newProduct = await saveProduct(productData)
+
+    return res.status(201).json({ msg: `New product created: ${name}`, product: newProduct, image: req.body.image })
   } catch (error) {
     next(error)
   }
 }
 
 /** @type {import("express").RequestHandler} */
-export async function searchProducts(req, res, next) {
+export async function searchProductsByCategory(req, res, next) {
   try {
-    const { category, description, name, price } = req.body
-
-    const filters = {}
-    if (category) filters.category = category
-    if (description) filters.description = description
-    if (name) filters.name = name
-    if (price !== undefined) filters.price = Number(price)
-
-    const products = await productsCheck(filters)
-
-    res.json({ msg: "Here are the products", products: products })
+    if (req.params.category) {
+      const products = await productsCheck({ category: req.params.category })
+      res.json({ msg: "Here are the products", products: products })
+    }
   } catch (error) {
     if (error.message === "Not found") {
-      return res.status(404).json({ msg: "Product not found" })
+      return res.status(404).json({ msg: "Product(s) not found" })
     }
     next(error)
   }

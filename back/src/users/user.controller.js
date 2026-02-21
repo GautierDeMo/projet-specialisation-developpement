@@ -133,7 +133,7 @@ export async function refreshToken(req, res, next) {
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       // Clean up the expired token from DB
-      await deleteRefreshToken(refreshToken).catch(() => {})
+      await deleteRefreshToken(refreshToken).catch(() => { })
       return next({ status: 403, message: 'Invalid refresh token' })
     }
     if (error.name === 'JsonWebTokenError') {

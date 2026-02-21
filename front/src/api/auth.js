@@ -1,6 +1,6 @@
-import { apiFetch } from './client.js'
 import { authStore } from '../store/auth.js'
 import { API_URL } from '../config/api.config.js'
+import { apiFetch } from '../utils/client.js'
 
 export async function register(email, password) {
   const response = await apiFetch('/user/register', {
