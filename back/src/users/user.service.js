@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt'
-import crypto from 'crypto'
-import { prisma } from '../orm/client.js'
+import crypto from 'node:crypto'
 import jwt from 'jsonwebtoken'
+import { prisma } from '../orm/client.js'
 
 /**
  * Hash a token using SHA-256

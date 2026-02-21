@@ -10,5 +10,5 @@ renderNavbar()
 try {
   await navigate()
 } catch (error) {
-  console.error(error)
+  console.error("Erreur lors de l'initialisation :", error)
 }

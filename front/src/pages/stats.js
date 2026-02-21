@@ -1,8 +1,11 @@
 import { fetchStats } from '../api/stats.js'
+// N'oublie pas l'import de l'utilitaire !
+import { createTrustedHTML } from '../utils/trustedTypes.js'
 
 export default async function render(container) {
-  container.innerHTML = `
-    <div class="bg-blue-50 min-h-screen py-10">
+  // On utilise createTrustedHTML pour injecter le squelette de la page
+  container.innerHTML = createTrustedHTML(`
+    <div class=" min-h-screen py-10">
       <h1 class="text-3xl font-bold mb-10 text-center text-gray-700">
         Statistiques des produits
       </h1>
@@ -10,14 +13,8 @@ export default async function render(container) {
       <div id="stats"
            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto px-4">
       </div>
-      
-      <div class="mt-12 flex justify-center">
-        <a href="#/" class="text-gray-700 italic font-semibold hover:underline">
-           Retour accueil
-        </a>
-      </div>
     </div>
-  `
+  `)
 
   const stats = await fetchStats()
   const statsContainer = document.getElementById('stats')
@@ -27,10 +24,11 @@ export default async function render(container) {
     card.className =
       'bg-white text-center p-6 rounded-lg shadow hover:shadow-lg transition'
 
-    card.innerHTML = `
+    const cardHTML = `
       <h2 class="text-xl font-semibold mb-2 text-gray-700">${nom}</h2>
       <p class="text-gray-500">${compte} produit${compte > 1 ? 's' : ''}</p>
     `
+    card.innerHTML = createTrustedHTML(cardHTML)
 
     statsContainer.appendChild(card)
   })
