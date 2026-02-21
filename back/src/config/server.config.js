@@ -2,6 +2,8 @@ import https from 'node:https'
 import http from 'node:http'
 import devcert from 'devcert'
 
+let detectedProtocol = 'http'
+
 export async function createServer(app, port) {
   try {
     console.log('🔒 Génération des certificats SSL avec devcert...')
@@ -17,6 +19,8 @@ export async function createServer(app, port) {
       console.log('🔒 HSTS activé')
     })
 
+    detectedProtocol = 'https'
+
     return server
   } catch (error) {
     console.error('❌ Erreur avec devcert:', error.message)
@@ -29,6 +33,12 @@ export async function createServer(app, port) {
       console.log('⚠️  HSTS désactivé (pas de certificats SSL)')
     })
 
+    detectedProtocol = 'http'
+
     return server
   }
+}
+
+export function isHttps() {
+  return detectedProtocol === 'https'
 }

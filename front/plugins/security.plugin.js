@@ -1,6 +1,5 @@
 import crypto from 'node:crypto'
 
-// Fonction pour créer le middleware HSTS
 function createHstsMiddleware(protocol) {
   return (req, res, next) => {
     const isHttps = req.connection.encrypted || protocol === 'https'
@@ -15,39 +14,43 @@ function createHstsMiddleware(protocol) {
   }
 }
 
-// Fonction pour créer le middleware CSP
-function createCspMiddleware(backendUrl) {
+function createCspMiddleware(backendUrl, frontendUrl) {
   return (req, res, next) => {
     const nonce = crypto.randomBytes(16).toString('base64')
 
     res.locals = res.locals || {}
     res.locals.nonce = nonce
 
+    const wsUrl = frontendUrl.replace('https:', 'wss:').replace('http:', 'ws:')
+    const backendOrigin = backendUrl.replace(/\/api.*$/, '')
+
     res.setHeader(
       'Content-Security-Policy',
       [
-        "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}'`,
-        "style-src 'self' 'unsafe-inline'",
+        `default-src ${frontendUrl}`,
+        // ❌ 'strict-dynamic' est retiré car il désactive la liste blanche des domaines (host-based allowlisting).
+        // Vite a besoin de charger des modules ES en cascade (comme @vite/client) qui ne possèdent pas de nonce
+        // lors du développement. On utilise donc uniquement le nonce et l'URL source pour la compatibilité.
+        `script-src ${frontendUrl} 'nonce-${nonce}' 'unsafe-inline'`,
+        `style-src ${frontendUrl} 'unsafe-inline'`,
         "script-src-attr 'none'",
-        "img-src 'self' data: https:",
-        `connect-src 'self' ${backendUrl}`,
-        "font-src 'self' data:",
+        `img-src ${frontendUrl} data: https:`,
+        `connect-src ${frontendUrl} ${wsUrl} ${backendOrigin}`,
+        `font-src ${frontendUrl} data:`,
         "object-src 'none'",
-        "base-uri 'self'",
-        "form-action 'self'",
+        `base-uri ${frontendUrl}`,
+        `form-action ${frontendUrl}`,
         "frame-ancestors 'none'",
         'upgrade-insecure-requests',
         "require-trusted-types-for 'script'",
         'trusted-types default',
-        `report-uri ${backendUrl}/api/csp/report`,
+        `report-uri ${backendUrl}/csp/report`,
       ].join('; ')
     )
     next()
   }
 }
 
-// Fonction pour injecter les nonces dans le HTML
 function injectNoncesIntoHtml(html) {
   const nonce = crypto.randomBytes(16).toString('base64')
 
@@ -61,14 +64,13 @@ function injectNoncesIntoHtml(html) {
   return html
 }
 
-// Plugin de sécurité pour Vite
-export function securityPlugin({ protocol, backendUrl }) {
+export function securityPlugin({ protocol, backendUrl, frontendUrl }) {
   return {
     name: 'vite-plugin-security',
 
     configureServer(server) {
       server.middlewares.use(createHstsMiddleware(protocol))
-      server.middlewares.use(createCspMiddleware(backendUrl))
+      server.middlewares.use(createCspMiddleware(backendUrl, frontendUrl))
     },
 
     transformIndexHtml: {
