@@ -330,13 +330,20 @@ taskkill /PID <PID> /F
 
 Le projet implémente les mesures de sécurité suivantes :
 
+Le projet implémente les mesures de sécurité suivantes :
+
 - ✅ **HTTPS** avec certificats SSL locaux (devcert)
 - ✅ **HSTS** (HTTP Strict Transport Security) - Force HTTPS pendant 1 an
-- ✅ **CSP** (Content Security Policy) stricte avec nonces dynamiques
-- ✅ **Trusted Types** - Protection XSS DOM
-- ✅ **CORS** configuré et restreint
+- ✅ **CSP (Content Security Policy)** :
+  - Utilisation de **Nonces** dynamiques pour chaque requête.
+  - 💡 _Note : la directive `'strict-dynamic'` est volontairement omise pour assurer la compatibilité avec le chargement de modules ES en cascade de Vite en mode développement._
+- ✅ **Protection CSRF** : Implémentation du pattern **Double Submit Cookie** via `csrf-csrf` (v4).
+  - Tokens avec une durée de validité de **30 minutes**.
+  - Rejet systématique des requêtes non autorisées (Erreur 403).
+- ✅ **Trusted Types** - Protection XSS au niveau du DOM.
+- ✅ **Gestion des Cookies** : Flags `HttpOnly`, `SameSite: Strict` et `Secure` (activé dynamiquement via détection TLS).
+- ✅ **CORS** configuré et restreint aux domaines autorisés (api/stats).
 - ✅ **security.txt** (RFC 9116) : `/.well-known/security.txt`
-- ✅ **Détection automatique du protocole** - Frontend et backend toujours synchronisés
 
 > **Score de sécurité : 100/100**
 
