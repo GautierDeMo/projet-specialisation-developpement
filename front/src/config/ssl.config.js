@@ -1,4 +1,7 @@
 import devcert from 'devcert'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export async function getSSLConfig() {
   try {
@@ -25,4 +28,9 @@ export async function getSSLConfig() {
       protocol: 'http',
     }
   }
+}
+
+export function getFrontendUrl(protocol) {
+  const port = process.env.PORT || 5000
+  return `${protocol}://localhost:${port}`
 }

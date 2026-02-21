@@ -1,5 +1,6 @@
 import { register } from '../api/auth.js'
 import { createTrustedHTML } from '../utils/trustedTypes.js'
+import { getCsrfToken } from '../utils/csrf.js'
 
 export default function render(container) {
   container.innerHTML = createTrustedHTML(`
@@ -66,7 +67,12 @@ export default function render(container) {
     const password = container.querySelector('#password').value
 
     try {
-      await register(email, password)
+      // 1. Récupération du token CSRF tout frais
+      const csrfToken = await getCsrfToken()
+
+      // 2. Passage du token à la fonction d'inscription
+      await register(email, password, csrfToken)
+
       location.hash = '#/'
     } catch (err) {
       errorMsg.textContent = err.message

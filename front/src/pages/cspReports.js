@@ -1,4 +1,4 @@
-import { cspService } from '../api/csp.js'
+import { csp } from '../api/csp.js'
 import { createTrustedHTML } from '../utils/trustedTypes.js'
 
 export default async function renderCspReports() {
@@ -7,12 +7,12 @@ export default async function renderCspReports() {
   const initialHTML = `
     <div class="container mx-auto p-6 max-w-6xl">
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">📊 Rapports CSP</h1>
-        <button id="deleteAllBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+        <h1 class="text-3xl font-bold">Rapports CSP</h1>
+        <button id="deleteAllBtn" class="bg-red-500 cursor-pointer text-white px-4 py-2 rounded hover:bg-red-600 transition">
           🗑️ Supprimer tous les rapports
         </button>
       </div>
-
+      
       <div id="reports-container">
         <p class="text-gray-500">Chargement...</p>
       </div>
@@ -28,7 +28,7 @@ export default async function renderCspReports() {
     ?.addEventListener('click', async () => {
       if (confirm('Êtes-vous sûr de vouloir supprimer tous les rapports ?')) {
         try {
-          await cspService.deleteAllReports()
+          await csp.deleteAllReports()
           alert('✅ Rapports supprimés avec succès')
           await loadReports()
         } catch (error) {
@@ -43,7 +43,7 @@ async function loadReports() {
   const container = document.querySelector('#reports-container')
 
   try {
-    const reports = await cspService.getReports()
+    const reports = await csp.getReports()
 
     let html = ''
 
@@ -73,29 +73,29 @@ async function loadReports() {
                   report.createdAt
                 ).toLocaleString('fr-FR')}</span>
               </div>
-
+              
               <div class="space-y-2 text-sm">
                 <div class="flex items-start gap-2">
-                  <strong class="text-gray-700 min-w-[140px]">Page :</strong>
+                  <strong class="text-gray-700 min-w-[140px]">Page :</strong> 
                   <code class="bg-gray-100 px-2 py-1 rounded text-xs flex-1 break-all">${
                     report.documentUri
                   }</code>
                 </div>
-
+                
                 <div class="flex items-start gap-2">
-                  <strong class="text-gray-700 min-w-[140px]">Directive violée :</strong>
+                  <strong class="text-gray-700 min-w-[140px]">Directive violée :</strong> 
                   <code class="bg-red-50 text-red-700 px-2 py-1 rounded text-xs font-mono">${
                     report.violatedDirective
                   }</code>
                 </div>
-
+                
                 <div class="flex items-start gap-2">
-                  <strong class="text-gray-700 min-w-[140px]">Ressource bloquée :</strong>
+                  <strong class="text-gray-700 min-w-[140px]">Ressource bloquée :</strong> 
                   <code class="bg-gray-100 px-2 py-1 rounded text-xs flex-1 break-all">${
                     report.blockedUri
                   }</code>
                 </div>
-
+                
                 <details class="mt-3">
                   <summary class="cursor-pointer text-blue-600 hover:underline font-medium">
                     📄 Voir le rapport complet JSON

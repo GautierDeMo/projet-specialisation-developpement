@@ -10,12 +10,13 @@ import {
   hash,
   saveRefreshToken,
 } from './user.service.js'
+import { isHttps } from '../config/server.config.js'
 
 const REFRESH_TOKEN_IN_DAYS = 7
 
 const COOKIE_OPTIONS = () => ({
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  secure: isHttps(),
   sameSite: 'strict',
   maxAge: REFRESH_TOKEN_IN_DAYS * 24 * 60 * 60 * 1000,
 })
@@ -155,7 +156,7 @@ export async function logout(req, res, next) {
 
     res.clearCookie('refreshToken', {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isHttps(),
       sameSite: 'strict',
     })
 

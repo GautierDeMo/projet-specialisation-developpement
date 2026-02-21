@@ -5,8 +5,25 @@ import { createTrustedHTML } from './utils/trustedTypes.js'
 const routes = {
   '/': { loader: () => import('./pages/home.js') },
   '/stats': { loader: () => import('./pages/stats.js') },
+  '/cart': { loader: () => import('./pages/cart.js') },
   '/csp-reports': {
     loader: () => import('./pages/cspReports.js'),
+    guard: 'auth',
+  },
+  '/dashboard': {
+    loader: () => import('./pages/dashboard.js'),
+    guard: 'auth',
+  },
+  '/products': { loader: () => import('./pages/products/products.js') },
+  '/products/create': {
+    loader: () => import('./pages/products/productCreate.js'),
+    guard: 'auth',
+  },
+  '/products/:id': {
+    loader: () => import('./pages/products/productDetail.js'),
+  },
+  '/products/:id/edit': {
+    loader: () => import('./pages/products/productEdit.js'),
     guard: 'auth',
   },
   '/login': { loader: () => import('./pages/login.js'), guard: 'guest' },
@@ -14,7 +31,33 @@ const routes = {
 }
 
 function matchRoute(path) {
-  return routes[path] || null
+  // Check for exact matches first
+  if (routes[path]) {
+    return routes[path]
+  }
+
+  // Check for parameterized routes
+  for (const route in routes) {
+    if (route.includes(':')) {
+      const routeParts = route.split('/')
+      const pathParts = path.split('/')
+
+      if (routeParts.length !== pathParts.length) {
+        continue
+      }
+
+      const isMatch = routeParts.every(
+        (routePart, index) =>
+          routePart.startsWith(':') || routePart === pathParts[index]
+      )
+
+      if (isMatch) {
+        return routes[route]
+      }
+    }
+  }
+
+  return null
 }
 
 export async function navigate() {

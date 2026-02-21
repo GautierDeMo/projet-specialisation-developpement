@@ -1,10 +1,14 @@
+import { apiFetch } from '../utils/client.js'
 import { authStore } from '../store/auth.js'
 import { API_URL } from '../config/api.config.js'
-import { apiFetch } from '../utils/client.js'
+import { resetCsrfToken, getCsrfToken } from '../utils/csrf.js'
 
-export async function register(email, password) {
+export async function register(email, password, csrfToken) {
   const response = await apiFetch('/user/register', {
     method: 'POST',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
     body: JSON.stringify({ email, password }),
   })
 
@@ -19,9 +23,12 @@ export async function register(email, password) {
   return data
 }
 
-export async function login(email, password) {
+export async function login(email, password, csrfToken) {
   const response = await apiFetch('/user/login', {
     method: 'POST',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
     body: JSON.stringify({ email, password }),
   })
 
@@ -42,6 +49,7 @@ export async function logout() {
     location.hash = '#/login'
   } finally {
     authStore.clear()
+    resetCsrfToken()
   }
 }
 
@@ -51,9 +59,15 @@ export async function logout() {
  */
 export async function checkAuth() {
   try {
+    // Get CSRF token for the refresh request
+    const csrfToken = await getCsrfToken()
+
     const response = await fetch(`${API_URL}/user/refresh`, {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        'x-csrf-token': csrfToken,
+      },
     })
 
     if (!response.ok) return false

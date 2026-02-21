@@ -1,3 +1,4 @@
+import { prisma } from '../orm/client.js'
 import { urlToBase64 } from "../utils/utils.js"
 import { ImageDTO } from "./image.dto.js"
 
@@ -12,7 +13,7 @@ export async function saveImage({ productId, url }) {
   if (!result.success) {
     throw new Error("DTO error");
   }
-  return await prisma.image.create({
+  return prisma.image.create({
     data: {
       productId,
       url,

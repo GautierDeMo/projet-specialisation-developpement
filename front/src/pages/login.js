@@ -1,5 +1,6 @@
 import { login } from '../api/auth.js'
 import { createTrustedHTML } from '../utils/trustedTypes.js'
+import { getCsrfToken } from '../utils/csrf.js'
 
 export default function render(container) {
   container.innerHTML = createTrustedHTML(`
@@ -65,7 +66,9 @@ export default function render(container) {
     const password = container.querySelector('#password').value
 
     try {
-      await login(email, password)
+      const csrfToken = await getCsrfToken()
+      await login(email, password, csrfToken)
+
       location.hash = '#/'
     } catch (err) {
       errorMsg.textContent = err.message

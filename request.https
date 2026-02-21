@@ -58,7 +58,13 @@ Content-Type: application/json
 }
 
 ### Search PRODUCTS
-GET https://localhost:3000/api/products/search/{{createOneProduct.response.body.product.category}}
+# Soit on cherche par nom => on supprime la clé 'category', soit par catégorie, et on supprime la clé 'name"
+GET https://localhost:3000/api/products/search/
+Content-Type: application/json
+
+{
+  "category": "Sport"
+}
 
 
 ################################# PATCH ROUTES #################################

@@ -263,9 +263,151 @@ const products = [
     price: 2.2,
     category: 'Hygiène',
   },
+
+  // ===== Électronique (8 produits) =====
+  {
+    name: 'Smartphone',
+    description: 'Smartphone dernière génération',
+    price: 699.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Ordinateur portable',
+    description: 'PC portable 15 pouces',
+    price: 999.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Tablette',
+    description: 'Tablette 10 pouces',
+    price: 299.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Écouteurs',
+    description: 'Écouteurs sans fil',
+    price: 149.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Montre connectée',
+    description: 'Smartwatch sport',
+    price: 199.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Appareil photo',
+    description: 'Appareil photo numérique',
+    price: 449.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Téléviseur',
+    description: 'TV 4K 55 pouces',
+    price: 799.9,
+    category: 'Électronique',
+  },
+  {
+    name: 'Console de jeu',
+    description: 'Console de jeux vidéo',
+    price: 399.9,
+    category: 'Électronique',
+  },
+
+  // ===== Jardin (6 produits) =====
+  {
+    name: 'Tondeuse',
+    description: 'Tondeuse à gazon électrique',
+    price: 249.9,
+    category: 'Jardin',
+  },
+  {
+    name: 'Arrosoir',
+    description: 'Arrosoir 10 litres',
+    price: 19.9,
+    category: 'Jardin',
+  },
+  {
+    name: 'Bêche',
+    description: 'Bêche jardin métallique',
+    price: 29.9,
+    category: 'Jardin',
+  },
+  {
+    name: 'Gants de jardinage',
+    description: 'Gants résistants',
+    price: 12.9,
+    category: 'Jardin',
+  },
+  {
+    name: 'Serre',
+    description: 'Petite serre de jardin',
+    price: 149.9,
+    category: 'Jardin',
+  },
+  {
+    name: 'Transplantoir',
+    description: 'Transplantoir professionnel',
+    price: 24.9,
+    category: 'Jardin',
+  },
+
+  // ===== Vêtements (8 produits) =====
+  {
+    name: 'T-shirt',
+    description: 'T-shirt coton bio',
+    price: 19.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Jean',
+    description: 'Jean denim slim',
+    price: 59.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Robe',
+    description: "Robe d'été",
+    price: 39.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Veste',
+    description: 'Veste imperméable',
+    price: 79.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Baskets',
+    description: 'Baskets sport',
+    price: 69.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Pull',
+    description: 'Pull laine',
+    price: 49.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Écharpe',
+    description: 'Écharpe en laine',
+    price: 24.9,
+    category: 'Vêtements',
+  },
+  {
+    name: 'Chaussettes',
+    description: 'Lot de 3 paires',
+    price: 12.9,
+    category: 'Vêtements',
+  },
 ]
 
 async function main() {
+  // Supprime les produits existants
+  await prisma.product.deleteMany()
+
+  // Ajoute les produits
   await prisma.product.createMany({
     data: products,
   })
