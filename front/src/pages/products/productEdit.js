@@ -97,7 +97,7 @@ export default async function render(container) {
 
           <div>
             <label for="imageUrl" class="block text-sm font-medium text-gray-700 mb-2">
-              Ajouter une image (URL)
+             Ajouter l'URL d'une image (optionnel)
             </label>
             <input
               id="imageUrl"
@@ -105,9 +105,6 @@ export default async function render(container) {
               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://example.com/image.jpg"
             />
-            <p class="text-sm text-gray-500 mt-1">
-              Laissez vide pour ne pas modifier les images existantes
-            </p>
           </div>
 
           <div id="error-message" class="hidden bg-red-50 border border-red-200 rounded-lg p-4">

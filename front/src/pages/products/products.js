@@ -165,7 +165,7 @@ async function loadProducts() {
                 <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
                   ✏️ Modifier
                 </a>
-                <button onclick="deleteProductById(${product.id})" class="text-red-600 hover:underline text-sm font-medium cursor-pointer">
+                <button class="delete-product-btn text-red-600 hover:underline text-sm font-medium cursor-pointer" data-product-id="${product.id}">
                   🗑️ Supprimer
                 </button>
               </div>
@@ -211,6 +211,26 @@ async function loadProducts() {
           addToCart(productData)
         })
       }
+    })
+
+    // Add event listeners for "Delete product" buttons
+    const deleteButtons = container.querySelectorAll('.delete-product-btn')
+    deleteButtons.forEach((btn) => {
+      const productId = Number.parseInt(btn.dataset.productId)
+
+      btn.addEventListener('click', async () => {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+          return
+        }
+
+        try {
+          await deleteProduct(productId)
+          alert('✅ Produit supprimé avec succès')
+          await loadProducts() // Reload the products list
+        } catch (error) {
+          alert('❌ Erreur lors de la suppression: ' + error.message)
+        }
+      })
     })
   } catch (error) {
     container.innerHTML = createTrustedHTML(`
@@ -283,7 +303,7 @@ async function searchProducts(filters) {
                 <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
                   ✏️ Modifier
                 </a>
-                <button onclick="deleteProductById(${product.id})" class="text-red-600 hover:underline text-sm font-medium">
+                <button class="delete-product-btn text-red-600 hover:underline text-sm font-medium cursor-pointer" data-product-id="${product.id}">
                   🗑️ Supprimer
                 </button>
               </div>
@@ -330,6 +350,26 @@ async function searchProducts(filters) {
         })
       }
     })
+
+    // Add event listeners for "Delete product" buttons in search results
+    const deleteButtons = container.querySelectorAll('.delete-product-btn')
+    deleteButtons.forEach((btn) => {
+      const productId = Number.parseInt(btn.dataset.productId)
+
+      btn.addEventListener('click', async () => {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+          return
+        }
+
+        try {
+          await deleteProduct(productId)
+          alert('✅ Produit supprimé avec succès')
+          await searchProducts()
+        } catch (error) {
+          alert('❌ Erreur lors de la suppression: ' + error.message)
+        }
+      })
+    })
   } catch (error) {
     container.innerHTML = createTrustedHTML(`
       <div class="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -337,20 +377,5 @@ async function searchProducts(filters) {
       </div>
     `)
     console.log(error)
-  }
-}
-
-// Make deleteProductById globally available for onclick handlers
-globalThis.deleteProductById = async function (productId) {
-  if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-    return
-  }
-
-  try {
-    await deleteProduct(productId)
-    alert('✅ Produit supprimé avec succès')
-    await loadProducts() // Reload the products list
-  } catch (error) {
-    alert('❌ Erreur lors de la suppression: ' + error.message)
   }
 }
