@@ -200,6 +200,7 @@ pnpm preview         # Prévisualiser le build
 ```bash
 pnpm prisma:studio   # Interface graphique Prisma
 pnpm prisma:migrate  # Créer/appliquer une migration
+pnpm prisma:seed     # Peupler la BDD avec des données de test (produits)
 
 # Ou depuis back/
 cd back
@@ -207,6 +208,26 @@ pnpm prisma generate # Régénérer le client Prisma
 pnpm prisma migrate dev --name nom_migration  # Créer une migration
 pnpm prisma db push  # Push le schéma sans migration
 pnpm prisma studio   # Ouvrir Prisma Studio
+pnpm seed            # Peupler la BDD avec des données de test
+```
+
+#### 🌱 Seed (données de test)
+
+La commande `pnpm prisma:seed` injecte des données de test dans la base de données :
+
+**Quand l'utiliser :**
+
+```bash
+# Après avoir appliqué les migrations
+pnpm prisma:migrate
+pnpm prisma:seed    # Injecter les données de test
+```
+
+**Réinitialiser complètement :**
+
+```bash
+pnpm db:reset       # Supprimer et recréer la BDD
+pnpm prisma:seed    # Réinjecter les données de test
 ```
 
 ---
