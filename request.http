@@ -48,7 +48,11 @@ PATCH http://localhost:3000/api/products/{{productId}} HTTP/1.1
 Content-Type: application/json
 
 {
-  "description": "Non"
+  "category": "",
+  "description": "Non",
+  "images": [],
+  "name": "",
+  "price": 1
 }
 
 ################################# DELETE ROUTES ################################

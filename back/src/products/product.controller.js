@@ -43,7 +43,7 @@ export async function getProductById(req, res, next) {
 }
 
 /** @type {import("express").RequestHandler} */
-export async function patchProductById(req, res, next) {
+export async function putProductById(req, res, next) {
   try {
     await productCheck({ id: Number(req.params.id) })
 
