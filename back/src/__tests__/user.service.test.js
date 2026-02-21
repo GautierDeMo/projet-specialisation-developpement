@@ -1,7 +1,7 @@
 import { jest, describe, it, expect, beforeEach } from '@jest/globals'
 
 // Mock the Prisma client BEFORE importing the service (required for ESM)
-jest.unstable_mockModule('../db/client.js', () => ({
+jest.unstable_mockModule('../orm/client.js', () => ({
   prisma: {
     user: {
       findUnique: jest.fn(),
@@ -28,7 +28,7 @@ const {
   deleteRefreshToken,
 } = await import('../users/user.service.js')
 
-const { prisma } = await import('../db/client.js')
+const { prisma } = await import('../orm/client.js')
 
 beforeEach(() => {
   jest.clearAllMocks()

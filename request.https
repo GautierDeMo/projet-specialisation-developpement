@@ -44,7 +44,7 @@ Content-Type: application/json
   "category": "Sport"
 }
 
-################################# PATCH ROUTES #################################
+################################# UPDATE ROUTES #################################
 
 ### Update one PRODUCT
 PUT https://localhost:3000/api/products/{{productId}} HTTP/1.1

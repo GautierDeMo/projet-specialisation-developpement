@@ -9,12 +9,28 @@ export function renderNavbar() {
   if (!authStore.isAuthenticated()) {
     navbar.innerHTML = createTrustedHTML(`
       <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-        <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
-          Retour accueil
-        </a>
-        <a href="#/login" class="text-sm text-blue-700 hover:underline font-medium">
-          Se connecter
-        </a>
+        <div class="flex items-center gap-4">
+          <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
+            🏠 Accueil
+          </a>
+          <a href="#/products" class="text-sm text-gray-700 hover:underline font-medium">
+            📦 Produits
+          </a>
+          <a href="#/cart" class="text-sm text-gray-700 hover:underline font-medium">
+            🛒 Panier
+          </a>
+          <a href="#/stats" class="text-sm text-gray-700 hover:underline font-medium">
+            📊 Stats
+          </a>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="#/login" class="text-sm text-blue-700 hover:underline font-medium">
+            Se connecter
+          </a>
+          <a href="#/register" class="text-sm text-green-700 hover:underline font-medium">
+            S'inscrire
+          </a>
+        </div>
       </nav>
     `)
     return
@@ -27,13 +43,30 @@ export function renderNavbar() {
     <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
       <div class="flex items-center gap-4">
         <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
-          Retour accueil
+          🏠 Accueil
         </a>
-        <span class="text-sm text-gray-600">${email}</span>
+        <a href="#/products" class="text-sm text-gray-700 hover:underline font-medium">
+          📦 Produits
+        </a>
+        <a href="#/cart" class="text-sm text-gray-700 hover:underline font-medium">
+          🛒 Panier
+        </a>
+        <a href="#/dashboard" class="text-sm text-gray-700 hover:underline font-medium">
+          👤 Dashboard
+        </a>
+        <a href="#/stats" class="text-sm text-gray-700 hover:underline font-medium">
+          📊 Stats
+        </a>
+        <a href="#/csp-reports" class="text-sm text-gray-700 hover:underline font-medium">
+          🔒 CSP
+        </a>
       </div>
-      <button id="logout-btn" class="text-sm text-red-700 hover:underline font-medium">
-        Se déconnecter
-      </button>
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-gray-600">${email}</span>
+        <button id="logout-btn" class="text-sm text-red-700 hover:underline font-medium">
+          Se déconnecter
+        </button>
+      </div>
     </nav>
   `)
 

@@ -1,9 +1,9 @@
 import z from 'zod'
 
 export const ProductDTO = z.object({
-  category: z.string(),
-  description: z.string(),
-  images: z.array(),
-  name: z.string(),
-  price: z.number()
+  category: z.string().optional(),
+  description: z.string().optional(),
+  images: z.array(z.string()).optional(),
+  name: z.string().optional(),
+  price: z.number().optional(),
 })
