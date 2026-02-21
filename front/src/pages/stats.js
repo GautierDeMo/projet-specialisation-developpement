@@ -6,8 +6,8 @@ import { API_URL } from '../config/api.config.js'
 export default async function render(container) {
   // On utilise createTrustedHTML pour injecter le squelette de la page
   container.innerHTML = createTrustedHTML(`
-    <div class=" min-h-screen py-10">
-      <h1 class="text-3xl font-bold mb-10 text-center text-gray-700">
+       <div class="container mx-auto p-6 max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-10">
         Statistiques des produits
       </h1>
 

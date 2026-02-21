@@ -1,6 +1,7 @@
 import { getAllProducts, deleteProduct } from '../../api/product.js'
 import { authStore } from '../../store/auth.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
+import { addToCart } from '../cart.js'
 
 export default async function render(container) {
   container.innerHTML = createTrustedHTML(`
@@ -158,7 +159,7 @@ async function loadProducts() {
               authStore.isAuthenticated()
                 ? `
               <div class="flex gap-2">
-               <button class="text-green-600 hover:underline text-sm font-medium cursor-pointer">
+               <button class="add-to-cart-btn text-green-600 hover:underline text-sm font-medium cursor-pointer" data-product-id="${product.id}">
                 🛒 Ajouter au panier
               </button>
                 <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
@@ -170,7 +171,7 @@ async function loadProducts() {
               </div>
             `
                 : `
-              <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer">
+              <button class="add-to-cart-btn bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer" data-product-id="${product.id}">
                 🛒 Ajouter au panier
               </button>
             `
@@ -187,6 +188,30 @@ async function loadProducts() {
         ${productsHTML}
       </div>
     `)
+
+    // Add event listeners for "Add to cart" buttons
+    const addToCartButtons = container.querySelectorAll('.add-to-cart-btn')
+    addToCartButtons.forEach((btn) => {
+      const productId = Number.parseInt(btn.dataset.productId)
+      const product = products.find((p) => p.id === productId)
+
+      if (product) {
+        btn.addEventListener('click', () => {
+          const productData = {
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            description: product.description,
+            price: product.price,
+            image:
+              product.images && product.images.length > 0
+                ? product.images[0].data
+                : null,
+          }
+          addToCart(productData)
+        })
+      }
+    })
   } catch (error) {
     container.innerHTML = createTrustedHTML(`
       <div class="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -252,6 +277,9 @@ async function searchProducts(filters) {
               authStore.isAuthenticated()
                 ? `
               <div class="flex gap-2">
+                <button class="add-to-cart-btn text-green-600 hover:underline text-sm font-medium cursor-pointer" data-product-id="${product.id}">
+                  🛒 Ajouter au panier
+                </button>
                 <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
                   ✏️ Modifier
                 </a>
@@ -261,7 +289,7 @@ async function searchProducts(filters) {
               </div>
             `
                 : `
-              <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer">
+              <button class="add-to-cart-btn bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer" data-product-id="${product.id}">
                 🛒 Ajouter au panier
               </button>
             `
@@ -278,6 +306,30 @@ async function searchProducts(filters) {
         ${productsHTML}
       </div>
     `)
+
+    // Add event listeners for "Add to cart" buttons in search results
+    const addToCartButtons = container.querySelectorAll('.add-to-cart-btn')
+    addToCartButtons.forEach((btn) => {
+      const productId = Number.parseInt(btn.dataset.productId)
+      const product = products.find((p) => p.id === productId)
+
+      if (product) {
+        btn.addEventListener('click', () => {
+          const productData = {
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            description: product.description,
+            price: product.price,
+            image:
+              product.images && product.images.length > 0
+                ? product.images[0].data
+                : null,
+          }
+          addToCart(productData)
+        })
+      }
+    })
   } catch (error) {
     container.innerHTML = createTrustedHTML(`
       <div class="bg-red-50 border border-red-200 rounded-lg p-4">

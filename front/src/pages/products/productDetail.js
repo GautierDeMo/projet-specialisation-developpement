@@ -1,6 +1,7 @@
 import { getProductById, deleteProduct } from '../../api/product.js'
 import { authStore } from '../../store/auth.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
+import { addToCart } from '../cart.js'
 
 export default async function render(container) {
   // Extract product ID from URL hash
@@ -101,7 +102,7 @@ async function loadProductDetail(productId) {
               ${
                 authStore.isAuthenticated()
                   ? `
-                <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer">
+                <button class="add-to-cart-btn bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer">
                   🛒 Ajouter au panier
                 </button>
                 <a href="#/products/${product.id}/edit" class="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition inline-block cursor-pointer">
@@ -112,7 +113,7 @@ async function loadProductDetail(productId) {
                 </button>
               `
                   : `
-                <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer">
+                <button class="add-to-cart-btn bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer">
                   🛒 Ajouter au panier
                 </button>
               `
@@ -140,6 +141,25 @@ async function loadProductDetail(productId) {
         }
       })
     }
+
+    // Add to cart buttons
+    const addToCartButtons = container.querySelectorAll('.add-to-cart-btn')
+    addToCartButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const productData = {
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          description: product.description,
+          price: product.price,
+          image:
+            product.images && product.images.length > 0
+              ? product.images[0].data
+              : null,
+        }
+        addToCart(productData)
+      })
+    })
   } catch (error) {
     container.innerHTML = createTrustedHTML(`
       <div class="bg-red-50 border border-red-200 rounded-lg p-4">

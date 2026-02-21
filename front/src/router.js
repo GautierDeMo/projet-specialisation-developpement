@@ -5,6 +5,7 @@ import { createTrustedHTML } from './utils/trustedTypes.js'
 const routes = {
   '/': { loader: () => import('./pages/home.js') },
   '/stats': { loader: () => import('./pages/stats.js') },
+  '/cart': { loader: () => import('./pages/cart.js') },
   '/csp-reports': {
     loader: () => import('./pages/cspReports.js'),
     guard: 'auth',

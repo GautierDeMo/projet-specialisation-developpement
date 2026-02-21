@@ -17,10 +17,32 @@ export default function render(container) {
             <div class="text-center mb-4">
               <span class="text-4xl">📦</span>
             </div>
-            <h2 class="text-xl font-semibold text-center text-gray-800 mb-3">Nos Produits</h2>
+            <h2 class="text-xl font-semibold text-center text-gray-800 mb-3">Produits</h2>
             <p class="text-gray-600 text-center mb-4">Découvrez notre catalogue de produits variés</p>
-            <a href="#/products" class="block w-full bg-blue-500 text-white text-center py-2 rounded hover:bg-blue-600 transition">
-              Voir les produits
+            <div class="space-y-2">
+              <a href="#/products" class="block w-full bg-blue-500 text-white text-center py-2 rounded hover:bg-blue-600 transition">
+                Voir les produits
+              </a>
+              ${
+                isAuthenticated
+                  ? `
+              <a href="#/products/create" class="block w-full bg-green-500 text-white text-center py-2 rounded hover:bg-green-600 transition">
+                Ajouter un produit
+              </a>`
+                  : ''
+              }
+            </div>
+          </div>
+
+          <!-- Panier -->
+          <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+            <div class="text-center mb-4">
+              <span class="text-4xl">🛍️</span>
+            </div>
+            <h2 class="text-xl font-semibold text-center text-gray-800 mb-3">Panier</h2>
+            <p class="text-gray-600 text-center mb-4">Consultez votre panier d'achat</p>
+            <a href="#/cart" class="block w-full bg-blue-500 text-white text-center py-2 rounded hover:bg-blue-600 transition">
+              Voir le panier
             </a>
           </div>
 
@@ -35,6 +57,23 @@ export default function render(container) {
               Voir les stats
             </a>
           </div>
+          
+           <!-- CSP Reports (uniquement pour connectés) -->
+          ${
+            isAuthenticated
+              ? `
+          <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+            <div class="text-center mb-4">
+              <span class="text-4xl">🛡️</span>
+            </div>
+            <h2 class="text-xl font-semibold text-center text-gray-800 mb-3">Sécurité</h2>
+            <p class="text-gray-600 text-center mb-4">Consultez les rapports de sécurité CSP</p>
+            <a href="#/csp-reports" class="block w-full bg-gray-800 text-white text-center py-2 rounded hover:bg-gray-700 transition">
+              Rapports CSP
+            </a>
+          </div>`
+              : ''
+          }
 
           <!-- Dashboard -->
           ${
@@ -49,8 +88,7 @@ export default function render(container) {
             <a href="#/dashboard" class="block w-full bg-green-500 text-white text-center py-2 rounded hover:bg-green-600 transition">
               Dashboard
             </a>
-          </div>
-          `
+          </div>`
               : `
           <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
             <div class="text-center mb-4">
@@ -61,22 +99,9 @@ export default function render(container) {
             <a href="#/login" class="block w-full bg-green-500 text-white text-center py-2 rounded hover:bg-green-600 transition">
               Se connecter
             </a>
-          </div>
-          `
+          </div>`
           }
         </div>
-
-        ${
-          isAuthenticated
-            ? `
-        <div class="text-center">
-          <a href="#/csp-reports" class="bg-gray-800 px-6 py-3 rounded-lg shadow hover:shadow-md text-white font-semibold text-center transition hover:bg-gray-700 inline-block">
-             🛡️ Consulter les rapports CSP
-          </a>
-        </div>
-        `
-            : ''
-        }
       </div>
     </div>
   `

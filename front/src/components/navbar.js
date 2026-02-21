@@ -16,6 +16,9 @@ export function renderNavbar() {
           <a href="#/products" class="text-sm text-gray-700 hover:underline font-medium">
             📦 Produits
           </a>
+          <a href="#/cart" class="text-sm text-gray-700 hover:underline font-medium">
+            🛒 Panier
+          </a>
           <a href="#/stats" class="text-sm text-gray-700 hover:underline font-medium">
             📊 Stats
           </a>
@@ -44,6 +47,9 @@ export function renderNavbar() {
         </a>
         <a href="#/products" class="text-sm text-gray-700 hover:underline font-medium">
           📦 Produits
+        </a>
+        <a href="#/cart" class="text-sm text-gray-700 hover:underline font-medium">
+          🛒 Panier
         </a>
         <a href="#/dashboard" class="text-sm text-gray-700 hover:underline font-medium">
           👤 Dashboard
