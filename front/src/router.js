@@ -45,8 +45,9 @@ function matchRoute(path) {
         continue
       }
 
-      const isMatch = routeParts.every((routePart, index) => 
-        routePart.startsWith(':') || routePart === pathParts[index]
+      const isMatch = routeParts.every(
+        (routePart, index) =>
+          routePart.startsWith(':') || routePart === pathParts[index]
       )
 
       if (isMatch) {

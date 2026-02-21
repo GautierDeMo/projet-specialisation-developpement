@@ -21,12 +21,10 @@ export async function postImageAfterProductCreation(req, res, next) {
         base64Data = await urlToBase64(imageUrl)
       } catch (conversionError) {
         console.error('Error converting URL to base64:', conversionError)
-        return res
-          .status(400)
-          .json({
-            msg: 'Failed to convert image URL to base64',
-            error: conversionError.message,
-          })
+        return res.status(400).json({
+          msg: 'Failed to convert image URL to base64',
+          error: conversionError.message,
+        })
       }
     }
 
@@ -39,12 +37,10 @@ export async function postImageAfterProductCreation(req, res, next) {
         return res.status(201).json({ msg: `New image added`, image: newImage })
       } catch (saveError) {
         console.error('Error saving image:', saveError)
-        return res
-          .status(500)
-          .json({
-            msg: 'Failed to save image to database',
-            error: saveError.message,
-          })
+        return res.status(500).json({
+          msg: 'Failed to save image to database',
+          error: saveError.message,
+        })
       }
     }
 

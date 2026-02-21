@@ -21,14 +21,14 @@ export async function findAllProducts() {
       },
     },
   })
-  
+
   // Convert image data to base64 for JSON serialization
-  return products.map(product => ({
+  return products.map((product) => ({
     ...product,
-    images: product.images.map(image => ({
+    images: product.images.map((image) => ({
       ...image,
-      data: image.data ? Buffer.from(image.data).toString('base64') : null
-    }))
+      data: image.data ? Buffer.from(image.data).toString('base64') : null,
+    })),
   }))
 }
 
@@ -44,16 +44,16 @@ export async function findProduct(params) {
       },
     },
   })
-  
+
   if (!product) return null
-  
+
   // Convert image data to base64 for JSON serialization
   return {
     ...product,
-    images: product.images.map(image => ({
+    images: product.images.map((image) => ({
       ...image,
-      data: image.data ? Buffer.from(image.data).toString('base64') : null
-    }))
+      data: image.data ? Buffer.from(image.data).toString('base64') : null,
+    })),
   }
 }
 
@@ -83,14 +83,14 @@ export async function findProducts(params) {
       },
     },
   })
-  
+
   // Convert image data to base64 for JSON serialization
-  return products.map(product => ({
+  return products.map((product) => ({
     ...product,
-    images: product.images.map(image => ({
+    images: product.images.map((image) => ({
       ...image,
-      data: image.data ? Buffer.from(image.data).toString('base64') : null
-    }))
+      data: image.data ? Buffer.from(image.data).toString('base64') : null,
+    })),
   }))
 }
 
@@ -104,7 +104,7 @@ export async function productCheck(params) {
 
 export async function productsCheck(params) {
   const products = await findProducts(params)
-  if (!products) {
+  if (!products || products.length === 0) {
     throw new Error('Not found')
   }
   return products

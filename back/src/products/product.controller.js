@@ -44,11 +44,11 @@ export async function getProducts(req, res, next) {
 export async function getProductById(req, res, next) {
   try {
     const product = await findProduct({ id: Number(req.params.id) })
-    
+
     if (!product) {
       return res.status(404).json({ msg: 'Product not found' })
     }
-    
+
     return res
       .status(200)
       .json({ msg: 'Here is our product', product: product })
@@ -65,12 +65,10 @@ export async function putProductById(req, res, next) {
     const updatedProduct = await updateProduct(req.body, {
       id: Number(req.params.id),
     })
-    return res
-      .status(200)
-      .json({
-        msg: `Here is the updated product: ${updatedProduct.name}`,
-        product: updatedProduct,
-      })
+    return res.status(200).json({
+      msg: `Here is the updated product: ${updatedProduct.name}`,
+      product: updatedProduct,
+    })
   } catch (error) {
     next(error)
   }
@@ -80,6 +78,8 @@ export async function putProductById(req, res, next) {
 export async function postProduct(req, res, next) {
   try {
     const { category, description, name, price, imageUrl } = req.body
+
+    const productData = { category, description, name, price }
 
     const existingProduct = await findProduct({
       name: name,
@@ -91,18 +91,19 @@ export async function postProduct(req, res, next) {
         .json({ msg: 'Product already exists', product: existingProduct })
     }
 
-    const newProduct = await saveProduct({ category, description, name, price })
+    const newProduct = await saveProduct(productData)
 
     if (imageUrl) {
       const imageBase64 = await urlToBase64(imageUrl)
-      const newImage = await saveImage({ productId: newProduct.id, imageBase64 })
-      return res
-        .status(201)
-        .json({
-          msg: `New product created: ${name}`,
-          product: newProduct,
-          image: newImage,
-        })
+      const newImage = await saveImage({
+        productId: newProduct.id,
+        imageBase64,
+      })
+      return res.status(201).json({
+        msg: `New product created: ${name}`,
+        product: newProduct,
+        image: newImage,
+      })
     }
 
     return res
@@ -127,7 +128,10 @@ export async function searchProducts(req, res, next) {
     const products = await findProducts(filters)
 
     if (!products.length) {
-      return res.status(200).json({ msg: 'Aucun produit correspondant à votre recherche', products: [] })
+      return res.status(200).json({
+        msg: 'Aucun produit correspondant à votre recherche',
+        products: [],
+      })
     }
 
     res.json({ msg: 'Here are the products', products: products })
