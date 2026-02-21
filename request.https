@@ -43,7 +43,7 @@ POST https://localhost:3000/api/user/login
 Content-Type: application/json
 
 {
-  "email": "{{register.response.body.user.email}}",
+  "email": "{{userEmail}}",
   "password": "{{userPassword}}"
 }
 
