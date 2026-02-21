@@ -201,6 +201,7 @@ pnpm preview         # Prévisualiser le build
 pnpm prisma:studio   # Interface graphique Prisma
 pnpm prisma:migrate  # Créer/appliquer une migration
 pnpm prisma:seed     # Peupler la BDD avec des données de test (produits)
+pnpm db:reset       # Supprimer et recréer la BDD
 
 # Ou depuis back/
 cd back
@@ -211,23 +212,17 @@ pnpm prisma studio   # Ouvrir Prisma Studio
 pnpm seed            # Peupler la BDD avec des données de test
 ```
 
-#### 🌱 Seed (données de test)
+#### 🌱 Seed
 
-La commande `pnpm prisma:seed` injecte des données de test dans la base de données :
+La commande `pnpm prisma:seed` injecte des données de test dans la base de données.
+Elle ajoute des Produits qui permettent d'avoir les statistiques demandées.
 
 **Quand l'utiliser :**
 
 ```bash
 # Après avoir appliqué les migrations
-pnpm prisma:migrate
+pnpm prisma:migrate dev
 pnpm prisma:seed    # Injecter les données de test
-```
-
-**Réinitialiser complètement :**
-
-```bash
-pnpm db:reset       # Supprimer et recréer la BDD
-pnpm prisma:seed    # Réinjecter les données de test
 ```
 
 ---
@@ -401,7 +396,7 @@ projet-specialisation-developpement/
 ## 👥 Équipe
 
 | Nom                       |
-| :------------------------ |
+|:--------------------------|
 | Solène Gouin              |
 | Jérémy Duflot             |
 | Mickaël Desclaux-Arramond |
