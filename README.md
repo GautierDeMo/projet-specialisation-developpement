@@ -65,7 +65,6 @@ pnpm install
 Cette commande :
 
 - ✅ Installe les dépendances du workspace (root, back, front)
-- ✅ Génère le client Prisma (`prisma generate`)
 - ✅ Applique le patch devcert pour Node.js 24+
 - ✅ Génère les certificats SSL automatiquement
 
@@ -76,9 +75,9 @@ Cette commande :
 Copier `.env.example` en `.env` :
 
 ```env
-POSTGRES_USER=devuser
-POSTGRES_PASSWORD=devpassword
-POSTGRES_DB=devdb
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB=db
 ```
 
 #### Fichier `back/.env`
@@ -89,7 +88,9 @@ Copier `back/.env.example` en `back/.env` :
 DATABASE_URL="postgresql://devuser:devpassword@localhost:5432/devdb?schema=public"
 ACCESS_SECRET_KEY="your-super-secret-access-key-change-me"
 REFRESH_SECRET_KEY="your-super-secret-refresh-key-change-me"
+CSRF_SECRET="your-super-secret-csrf-key-change-me"
 PORT=3000
+FRONT_PORT=5000
 ```
 
 ⚠️ **Utiliser les mêmes valeurs** que dans le `.env` racine pour PostgreSQL
@@ -99,6 +100,7 @@ PORT=3000
 ```bash
 openssl rand -base64 32  # Pour ACCESS_SECRET_KEY
 openssl rand -base64 32  # Pour REFRESH_SECRET_KEY
+openssl rand -base64 32  # Pour CSRF_SECRET
 ```
 
 #### Fichier `front/.env`
@@ -106,26 +108,18 @@ openssl rand -base64 32  # Pour REFRESH_SECRET_KEY
 Copier `front/.env.example` en `front/.env` :
 
 ```env
-# Host du backend (sans protocole)
-# Le protocole (http/https) est détecté automatiquement
-VITE_BACKEND_HOST=localhost:3000
+VITE_API_URL=localhost:3000 // sans protocole (http/https)
+PORT=5000
 ```
-
-**Le protocole est détecté automatiquement :**
-
-- Frontend HTTPS → Backend HTTPS
-- Frontend HTTP → Backend HTTP
-
-Pas besoin de changer cette valeur selon le mode !
 
 ### 4. Appliquer les migrations Prisma
 
 ```bash
 cd back
-pnpm prisma migrate dev
+npx prisma migrate dev
+npx prisma generate
+pnpm seed
 ```
-
-Ou laisser `pnpm start` les appliquer automatiquement.
 
 ### 5. Lancer le projet
 
@@ -133,15 +127,23 @@ Ou laisser `pnpm start` les appliquer automatiquement.
 pnpm start
 ```
 
+Cette commande :
+
+- ✅ Démarre PostgreSQL avec Docker
+- ✅ Lance le backend (port 3000)
+- ✅ Lance le frontend (port 5000)
+
 **Note :** Le mot de passe devcert sera redemandé au lancement du backend.
 
 ### 6. (Firefox) Approuver les certificats SSL sur le Front ET le Back
 
 > Lorsque l'on essaiera de s'inscrire sur l'application web Front, il se peut qu'une erreur intervienne liée au CORS.
 >
-> Dans ce cas là, il faudra se rendre sur l'application web Back, afin d'approuver le certificat SSL de cet url pour que l'appel fait depuis le Front sur l'application du Back soit autorisé.
+> Dans ce cas là, il faudra se rendre sur l'application web Back, afin d'approuver le certificat SSL de cet url pour que
+> l'appel fait depuis le Front sur l'application du Back soit autorisé.
 >
-> Pour l'approuver il faudra seulement faire en sorte de cliquer sur "Je connais les risques", ou "Se rendre quand même sur le site", lorsque vous tenterez d'accéder à l'application (Front ou Back d'ailleurs).
+> Pour l'approuver il faudra seulement faire en sorte de cliquer sur "Je connais les risques", ou "Se rendre quand même
+> sur le site", lorsque vous tenterez d'accéder à l'application (Front ou Back d'ailleurs).
 
 ---
 
@@ -182,7 +184,6 @@ pnpm start           # BDD + Backend + Frontend (tout lancer)
 pnpm dev             # Backend + Frontend (sans BDD)
 pnpm db:start        # Lancer uniquement PostgreSQL
 pnpm db:stop         # Arrêter PostgreSQL
-pnpm db:reset        # ⚠️ Réinitialiser la BDD (supprime les données)
 ```
 
 ### Backend
@@ -217,20 +218,7 @@ pnpm prisma generate # Régénérer le client Prisma
 pnpm prisma migrate dev --name nom_migration  # Créer une migration
 pnpm prisma db push  # Push le schéma sans migration
 pnpm prisma studio   # Ouvrir Prisma Studio
-pnpm seed            # Peupler la BDD avec des données de test
-```
-
-#### 🌱 Seed
-
-La commande `pnpm prisma:seed` injecte des données de test dans la base de données.
-Elle ajoute des Produits qui permettent d'avoir les statistiques demandées.
-
-**Quand l'utiliser :**
-
-```bash
-# Après avoir appliqué les migrations
-pnpm prisma:migrate dev
-pnpm prisma:seed    # Injecter les données de test
+pnpm seed            # Peupler la BDD avec des données de test (produits)
 ```
 
 ---
@@ -324,36 +312,39 @@ netstat -ano | findstr :3000
 taskkill /PID <PID> /F
 ```
 
+Ou changer la valeur du port dans le .env
+
 ---
 
 ## 🛡️ Sécurité
 
 Le projet implémente les mesures de sécurité suivantes :
 
-Le projet implémente les mesures de sécurité suivantes :
-
 - ✅ **HTTPS** avec certificats SSL locaux (devcert)
 - ✅ **HSTS** (HTTP Strict Transport Security) - Force HTTPS pendant 1 an
 - ✅ **CSP (Content Security Policy)** :
-  - Utilisation de **Nonces** dynamiques pour chaque requête.
-  - 💡 _Note : la directive `'strict-dynamic'` est volontairement omise pour assurer la compatibilité avec le chargement de modules ES en cascade de Vite en mode développement._
+    - Utilisation de **Nonces** dynamiques pour chaque requête.
+    - 💡 _Note : la directive `'strict-dynamic'` est volontairement omise pour assurer la compatibilité avec le
+      chargement de modules ES en cascade de Vite en mode développement._
 - ✅ **Protection CSRF** : Implémentation du pattern **Double Submit Cookie** via `csrf-csrf` (v4).
-  - Tokens avec une durée de validité de **30 minutes**.
-  - Rejet systématique des requêtes non autorisées (Erreur 403).
+    - Tokens avec une durée de validité de **30 minutes**.
+    - Rejet systématique des requêtes non autorisées (Erreur 403).
 - ✅ **Trusted Types** - Protection XSS au niveau du DOM.
 - ✅ **Gestion des Cookies** : Flags `HttpOnly`, `SameSite: Strict` et `Secure` (activé dynamiquement via détection TLS).
-- ✅ **CORS** configuré et restreint aux domaines autorisés (api/stats).
+- ✅ **CORS** configuré et restreint aux domaines autorisés (sauf `/api/stats`).
 - ✅ **security.txt** (RFC 9116) : `/.well-known/security.txt`
+- ✅ **Hashage des mots de passe** avec bcrypt
+- ✅ **Validation des entrées** avec Zod
 
 > **Score de sécurité : 100/100**
 
-**Documentation complète :** [`docs/SECURITY_TESTS.md`](./docs/SECURITY_TESTS.md)
+**Documentation complète :** [`SECURITY_TESTS.md`](./SECURITY_TESTS.md)
 
 ---
 
 ## 🧪 Tests de sécurité
 
-Voir le guide complet : [`docs/SECURITY_TESTS.md`](./docs/SECURITY_TESTS.md)
+Voir le guide complet : [`SECURITY_TESTS.md`](./SECURITY_TESTS.md)
 
 **Tests rapides :**
 
@@ -386,8 +377,7 @@ projet-specialisation-developpement/
 │   │   └── utils/          # Utilitaires (Trusted Types)
 │   ├── vite.config.js      # Config Vite avec HTTPS et CSP
 │   └── .env                # Variables d'environnement frontend
-├── docs/                   # Documentation
-│   └── SECURITY_TESTS.md   # Guide des tests de sécurité
+├── SECURITY_TESTS.md       # Guide des tests de sécurité
 ├── scripts/                # Scripts utilitaires
 │   └── fix-devcert.js      # Patch devcert pour Node.js 24+
 ├── .cert/                  # Certificats SSL (ignoré par Git)
@@ -411,7 +401,7 @@ projet-specialisation-developpement/
 ## 👥 Équipe
 
 | Nom                       |
-| :------------------------ |
+|:--------------------------|
 | Solène Gouin              |
 | Jérémy Duflot             |
 | Mickaël Desclaux-Arramond |
