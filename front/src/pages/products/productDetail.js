@@ -2,6 +2,7 @@ import { getProductById, deleteProduct } from '../../api/product.js'
 import { authStore } from '../../store/auth.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
 import { addToCart } from '../cart.js'
+import { getCsrfToken } from '../../utils/csrf.js'
 
 export default async function render(container) {
   // Extract product ID from URL hash
@@ -133,7 +134,8 @@ async function loadProductDetail(productId) {
         }
 
         try {
-          await deleteProduct(productId)
+          const csrfToken = await getCsrfToken()
+          await deleteProduct(productId, csrfToken)
           alert('✅ Produit supprimé avec succès')
           location.hash = '#/products'
         } catch (error) {

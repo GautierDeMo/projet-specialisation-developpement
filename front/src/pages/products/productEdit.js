@@ -4,6 +4,7 @@ import {
   addImageToProduct,
 } from '../../api/product.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
+import { getCsrfToken } from '../../utils/csrf.js'
 
 export default async function render(container) {
   // Extract product ID from URL hash
@@ -183,12 +184,13 @@ async function loadProductForEdit(productId) {
       const imageUrl = document.querySelector('#imageUrl').value.trim()
 
       try {
-        await updateProduct(productId, productData)
+        const csrfToken = await getCsrfToken()
+        await updateProduct(productId, productData, csrfToken)
 
         // If there's a new image URL, add it to the product
         if (imageUrl) {
           try {
-            await addImageToProduct(productId, { imageUrl })
+            await addImageToProduct(productId, { imageUrl }, csrfToken)
           } catch (imageError) {
             console.warn('Failed to add image:', imageError)
             // Don't fail the whole operation if image addition fails

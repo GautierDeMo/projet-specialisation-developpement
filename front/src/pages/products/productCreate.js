@@ -1,5 +1,6 @@
 import { createProduct, addImageToProduct } from '../../api/product.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
+import { getCsrfToken } from '../../utils/csrf.js'
 
 export default function render(container) {
   container.innerHTML = createTrustedHTML(`
@@ -137,12 +138,13 @@ export default function render(container) {
     const imageUrl = container.querySelector('#imageUrl').value.trim()
 
     try {
-      const response = await createProduct(productData)
+      const csrfToken = await getCsrfToken()
+      const response = await createProduct(productData, csrfToken)
 
       // If there's an image URL, add it to the product
       if (imageUrl && response.product) {
         try {
-          await addImageToProduct(response.product.id, { imageUrl })
+          await addImageToProduct(response.product.id, { imageUrl }, csrfToken)
         } catch (imageError) {
           console.warn('Failed to add image:', imageError)
           // Don't fail the whole operation if image addition fails

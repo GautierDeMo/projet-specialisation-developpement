@@ -2,6 +2,7 @@ import { getAllProducts, deleteProduct } from '../../api/product.js'
 import { authStore } from '../../store/auth.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
 import { addToCart } from '../cart.js'
+import { getCsrfToken } from '../../utils/csrf.js'
 
 export default async function render(container) {
   container.innerHTML = createTrustedHTML(`
@@ -85,7 +86,8 @@ export default async function render(container) {
     if (name) filters.name = name
     if (category) filters.category = category
 
-    await searchProducts(filters)
+    const csrfToken = await getCsrfToken()
+    await searchProducts(filters, csrfToken)
   })
 
   cancelSearchBtn.addEventListener('click', () => {
@@ -242,12 +244,12 @@ async function loadProducts() {
   }
 }
 
-async function searchProducts(filters) {
+async function searchProducts(filters, csrfToken) {
   const container = document.querySelector('#products-container')
 
   try {
     const response = await import('../../api/product.js').then((m) =>
-      m.searchProducts(filters)
+      m.searchProducts(filters, csrfToken)
     )
     const products = response.products || []
 
@@ -364,7 +366,8 @@ async function searchProducts(filters) {
         try {
           await deleteProduct(productId)
           alert('✅ Produit supprimé avec succès')
-          await searchProducts()
+          const newCsrfToken = await getCsrfToken()
+          await searchProducts({}, newCsrfToken)
         } catch (error) {
           alert('❌ Erreur lors de la suppression: ' + error.message)
         }

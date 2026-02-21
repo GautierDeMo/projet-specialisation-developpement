@@ -1,7 +1,7 @@
 import { apiFetch } from '../utils/client.js'
 import { authStore } from '../store/auth.js'
 import { API_URL } from '../config/api.config.js'
-import { resetCsrfToken } from '../utils/csrf.js'
+import { resetCsrfToken, getCsrfToken } from '../utils/csrf.js'
 
 export async function register(email, password, csrfToken) {
   const response = await apiFetch('/user/register', {
@@ -59,9 +59,15 @@ export async function logout() {
  */
 export async function checkAuth() {
   try {
+    // Get CSRF token for the refresh request
+    const csrfToken = await getCsrfToken()
+    
     const response = await fetch(`${API_URL}/user/refresh`, {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        'x-csrf-token': csrfToken,
+      },
     })
 
     if (!response.ok) return false

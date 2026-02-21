@@ -18,9 +18,12 @@ export async function getProductById(id) {
   return response.json()
 }
 
-export async function searchProducts(filters) {
+export async function searchProducts(filters, csrfToken) {
   const response = await apiFetch('/products/search', {
     method: 'POST',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
     body: JSON.stringify(filters),
   })
   if (!response.ok) {
@@ -30,9 +33,12 @@ export async function searchProducts(filters) {
   return response.json()
 }
 
-export async function createProduct(productData) {
+export async function createProduct(productData, csrfToken) {
   const response = await apiFetch('/products', {
     method: 'POST',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
     body: JSON.stringify(productData),
   })
   if (!response.ok) {
@@ -42,9 +48,12 @@ export async function createProduct(productData) {
   return response.json()
 }
 
-export async function updateProduct(id, productData) {
+export async function updateProduct(id, productData, csrfToken) {
   const response = await apiFetch(`/products/${id}`, {
     method: 'PUT',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
     body: JSON.stringify(productData),
   })
   if (!response.ok) {
@@ -54,9 +63,12 @@ export async function updateProduct(id, productData) {
   return response.json()
 }
 
-export async function deleteProduct(id) {
+export async function deleteProduct(id, csrfToken) {
   const response = await apiFetch(`/products/${id}`, {
     method: 'DELETE',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
   })
   if (!response.ok) {
     const error = await response.json()
@@ -65,9 +77,12 @@ export async function deleteProduct(id) {
   return response.json()
 }
 
-export async function addImageToProduct(productId, imageData) {
+export async function addImageToProduct(productId, imageData, csrfToken) {
   const response = await apiFetch(`/images/${productId}`, {
     method: 'POST',
+    headers: {
+      'x-csrf-token': csrfToken,
+    },
     body: JSON.stringify(imageData),
   })
   if (!response.ok) {

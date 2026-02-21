@@ -37,7 +37,7 @@ export default function render(container) {
           <!-- Panier -->
           <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
             <div class="text-center mb-4">
-              <span class="text-4xl">🛍️</span>
+              <span class="text-4xl">🛒️</span>
             </div>
             <h2 class="text-xl font-semibold text-center text-gray-800 mb-3">Panier</h2>
             <p class="text-gray-600 text-center mb-4">Consultez votre panier d'achat</p>
