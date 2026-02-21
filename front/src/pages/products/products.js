@@ -29,7 +29,7 @@ export default async function render(container) {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-            <input id="search-name" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+            <input id="search-name" type="text" placeholder="ex: Lait" class="w-full border border-gray-300 rounded-lg px-3 py-2">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
@@ -124,50 +124,62 @@ async function loadProducts() {
     }
 
     const productsHTML = products
-      .map(
-        (product) => `
-      <div class="border border-gray-200 rounded-lg p-4 bg-white shadow hover:shadow-md transition">
-        <div class="flex justify-between items-start mb-3">
-          <div>
-            <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
-            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-              ${product.category}
-            </span>
-          </div>
-          <div class="text-right">
-            <p class="text-xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
-          </div>
-        </div>
-        
-        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
-        
-        <div class="flex justify-between items-center">
-          <a href="#/products/${product.id}" class="text-blue-600 hover:underline text-sm font-medium">
-            👁️ Voir détails
-          </a>
-          
-          ${
-            authStore.isAuthenticated()
-              ? `
-            <div class="flex gap-2">
-              <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
-                ✏️ Modifier
-              </a>
-              <button onclick="deleteProductById(${product.id})" class="text-red-600 hover:underline text-sm font-medium">
-                🗑️ Supprimer
-              </button>
+      .map((product) => {
+        const hasImage =
+          product.images && product.images.length > 0 && product.images[0].data
+        const imageHtml = hasImage
+          ? `<img src="data:image/jpeg;base64,${product.images[0].data}" alt="${product.name}" class="w-full h-48 object-cover rounded-t-lg">`
+          : ''
+
+        return `
+      <div class="border border-gray-200 rounded-lg bg-white shadow hover:shadow-md transition overflow-hidden">
+        ${imageHtml}
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
+              <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                ${product.category}
+              </span>
             </div>
-          `
-              : `
-            <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer">
-              🛒 Ajouter au panier
-            </button>
-          `
-          }
+            <div class="text-right">
+              <p class="text-xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
+            </div>
+          </div>
+          
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
+          
+          <div class="flex justify-between items-center">
+            <a href="#/products/${product.id}" class="text-blue-600 hover:underline text-sm font-medium">
+              👁️ Voir détails
+            </a>
+            
+            ${
+              authStore.isAuthenticated()
+                ? `
+              <div class="flex gap-2">
+               <button class="text-green-600 hover:underline text-sm font-medium cursor-pointer">
+                🛒 Ajouter au panier
+              </button>
+                <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
+                  ✏️ Modifier
+                </a>
+                <button onclick="deleteProductById(${product.id})" class="text-red-600 hover:underline text-sm font-medium cursor-pointer">
+                  🗑️ Supprimer
+                </button>
+              </div>
+            `
+                : `
+              <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer">
+                🛒 Ajouter au panier
+              </button>
+            `
+            }
+          </div>
         </div>
       </div>
     `
-      )
+      })
       .join('')
 
     container.innerHTML = createTrustedHTML(`
@@ -206,50 +218,59 @@ async function searchProducts(filters) {
 
     // Reuse the same rendering logic as loadProducts
     const productsHTML = products
-      .map(
-        (product) => `
-      <div class="border border-gray-200 rounded-lg p-4 bg-white shadow hover:shadow-md transition">
-        <div class="flex justify-between items-start mb-3">
-          <div>
-            <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
-            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-              ${product.category}
-            </span>
-          </div>
-          <div class="text-right">
-            <p class="text-xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
-          </div>
-        </div>
-        
-        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
-        
-        <div class="flex justify-between items-center">
-          <a href="#/products/${product.id}" class="text-blue-600 hover:underline text-sm font-medium">
-            👁️ Voir détails
-          </a>
-          
-          ${
-            authStore.isAuthenticated()
-              ? `
-            <div class="flex gap-2">
-              <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
-                ✏️ Modifier
-              </a>
-              <button onclick="deleteProductById(${product.id})" class="text-red-600 hover:underline text-sm font-medium">
-                🗑️ Supprimer
-              </button>
+      .map((product) => {
+        const hasImage =
+          product.images && product.images.length > 0 && product.images[0].data
+        const imageHtml = hasImage
+          ? `<img src="data:image/jpeg;base64,${product.images[0].data}" alt="${product.name}" class="w-full h-48 object-cover rounded-t-lg">`
+          : ''
+
+        return `
+      <div class="border border-gray-200 rounded-lg bg-white shadow hover:shadow-md transition overflow-hidden">
+        ${imageHtml}
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
+              <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                ${product.category}
+              </span>
             </div>
-          `
-              : `
-            <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer">
-              🛒 Ajouter au panier
-            </button>
-          `
-          }
+            <div class="text-right">
+              <p class="text-xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
+            </div>
+          </div>
+          
+          <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
+          
+          <div class="flex justify-between items-center">
+            <a href="#/products/${product.id}" class="text-blue-600 hover:underline text-sm font-medium">
+              👁️ Voir détails
+            </a>
+            
+            ${
+              authStore.isAuthenticated()
+                ? `
+              <div class="flex gap-2">
+                <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
+                  ✏️ Modifier
+                </a>
+                <button onclick="deleteProductById(${product.id})" class="text-red-600 hover:underline text-sm font-medium">
+                  🗑️ Supprimer
+                </button>
+              </div>
+            `
+                : `
+              <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition cursor-pointer">
+                🛒 Ajouter au panier
+              </button>
+            `
+            }
+          </div>
         </div>
       </div>
     `
-      )
+      })
       .join('')
 
     container.innerHTML = createTrustedHTML(`
@@ -261,9 +282,9 @@ async function searchProducts(filters) {
     container.innerHTML = createTrustedHTML(`
       <div class="bg-red-50 border border-red-200 rounded-lg p-4">
         <p class="text-red-600 font-semibold">❌ Erreur lors de la recherche</p>
-        <p class="text-red-500 text-sm mt-2">${error.message}</p>
       </div>
     `)
+    console.log(error)
   }
 }
 

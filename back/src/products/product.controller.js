@@ -1,5 +1,6 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
 import { saveImage } from '../images/image.service.js'
+import { urlToBase64 } from '../utils/urlToBase64.js'
 import {
   findProduct,
   saveProduct,
@@ -7,7 +8,7 @@ import {
   updateProduct,
   deleteProduct,
   findAllProducts,
-  productsCheck,
+  findProducts,
 } from './product.service.js'
 
 /** @type {import("express").RequestHandler} */
@@ -42,14 +43,16 @@ export async function getProducts(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function getProductById(req, res, next) {
   try {
-    const product = await productCheck({ id: Number(req.params.id) })
+    const product = await findProduct({ id: Number(req.params.id) })
+    
+    if (!product) {
+      return res.status(404).json({ msg: 'Product not found' })
+    }
+    
     return res
       .status(200)
       .json({ msg: 'Here is our product', product: product })
   } catch (error) {
-    if (error.message === 'Not found') {
-      return res.status(404).json({ msg: 'Product not found' })
-    }
     next(error)
   }
 }
@@ -91,7 +94,8 @@ export async function postProduct(req, res, next) {
     const newProduct = await saveProduct({ category, description, name, price })
 
     if (imageUrl) {
-      const newImage = await saveImage({ productId: newProduct.id, imageUrl })
+      const imageBase64 = await urlToBase64(imageUrl)
+      const newImage = await saveImage({ productId: newProduct.id, imageBase64 })
       return res
         .status(201)
         .json({
@@ -120,13 +124,14 @@ export async function searchProducts(req, res, next) {
     if (name) filters.name = name
     if (price !== undefined) filters.price = Number(price)
 
-    const products = await productsCheck(filters)
+    const products = await findProducts(filters)
+
+    if (!products.length) {
+      return res.status(200).json({ msg: 'Aucun produit correspondant à votre recherche', products: [] })
+    }
 
     res.json({ msg: 'Here are the products', products: products })
   } catch (error) {
-    if (error.message === 'Not found') {
-      return res.status(404).json({ msg: 'Product not found' })
-    }
     next(error)
   }
 }

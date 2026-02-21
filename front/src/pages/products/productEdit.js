@@ -191,8 +191,7 @@ async function loadProductForEdit(productId) {
         // If there's a new image URL, add it to the product
         if (imageUrl) {
           try {
-            // Convert URL to base64 (simplified approach)
-            await addImageToProduct(productId, { imageBase64: imageUrl })
+            await addImageToProduct(productId, { imageUrl })
           } catch (imageError) {
             console.warn('Failed to add image:', imageError)
             // Don't fail the whole operation if image addition fails

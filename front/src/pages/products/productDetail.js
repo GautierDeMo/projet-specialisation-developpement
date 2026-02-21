@@ -85,7 +85,7 @@ async function loadProductDetail(productId) {
                   .map(
                     (image) => `
                   <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="${image.url}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <img src="data:image/jpeg;base64,${image.data}" alt="${product.name}" class="w-full h-48 object-cover">
                   </div>
                 `
                   )

@@ -10,13 +10,51 @@ export async function deleteProduct(params) {
 }
 
 export async function findAllProducts() {
-  return prisma.product.findMany()
+  const products = await prisma.product.findMany({
+    include: {
+      images: {
+        select: {
+          id: true,
+          data: true,
+        },
+        take: 1,
+      },
+    },
+  })
+  
+  // Convert image data to base64 for JSON serialization
+  return products.map(product => ({
+    ...product,
+    images: product.images.map(image => ({
+      ...image,
+      data: image.data ? Buffer.from(image.data).toString('base64') : null
+    }))
+  }))
 }
 
 export async function findProduct(params) {
-  return prisma.product.findFirst({
+  const product = await prisma.product.findFirst({
     where: params,
+    include: {
+      images: {
+        select: {
+          id: true,
+          data: true,
+        },
+      },
+    },
   })
+  
+  if (!product) return null
+  
+  // Convert image data to base64 for JSON serialization
+  return {
+    ...product,
+    images: product.images.map(image => ({
+      ...image,
+      data: image.data ? Buffer.from(image.data).toString('base64') : null
+    }))
+  }
 }
 
 export async function findProducts(params) {
@@ -33,16 +71,27 @@ export async function findProducts(params) {
     where.category = params.category
   }
 
-  return prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where,
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      price: true,
-      description: true,
+    include: {
+      images: {
+        select: {
+          id: true,
+          data: true,
+        },
+        take: 1, // Only get first image for card display
+      },
     },
   })
+  
+  // Convert image data to base64 for JSON serialization
+  return products.map(product => ({
+    ...product,
+    images: product.images.map(image => ({
+      ...image,
+      data: image.data ? Buffer.from(image.data).toString('base64') : null
+    }))
+  }))
 }
 
 export async function productCheck(params) {
