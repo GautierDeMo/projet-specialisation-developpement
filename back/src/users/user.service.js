@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt'
-import crypto from 'crypto'
+import crypto from 'node:crypto'
 import jwt from 'jsonwebtoken'
 import { prisma } from '../orm/client.js'
 

@@ -1,32 +1,41 @@
 import { authStore } from '../store/auth.js'
 import { logout } from '../api/auth.js'
+import { createTrustedHTML } from '../utils/trustedTypes.js'
 
 export function renderNavbar() {
   const navbar = document.getElementById('navbar')
   if (!navbar) return
 
   if (!authStore.isAuthenticated()) {
-    navbar.innerHTML = `
-      <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-end">
-        <a href="#/login" class="text-sm text-blue-600 hover:underline font-medium">
+    navbar.innerHTML = createTrustedHTML(`
+      <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
+          Retour accueil
+        </a>
+        <a href="#/login" class="text-sm text-blue-700 hover:underline font-medium">
           Se connecter
         </a>
       </nav>
-    `
+    `)
     return
   }
 
   const user = authStore.getUser()
   const email = user?.email ?? 'Connecté'
 
-  navbar.innerHTML = `
+  navbar.innerHTML = createTrustedHTML(`
     <nav class="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-      <span class="text-sm text-gray-600">${email}</span>
-      <button id="logout-btn" class="text-sm text-red-600 hover:underline font-medium">
+      <div class="flex items-center gap-4">
+        <a href="#/" class="text-sm text-gray-700 hover:underline font-medium">
+          Retour accueil
+        </a>
+        <span class="text-sm text-gray-600">${email}</span>
+      </div>
+      <button id="logout-btn" class="text-sm text-red-700 hover:underline font-medium">
         Se déconnecter
       </button>
     </nav>
-  `
+  `)
 
   navbar.querySelector('#logout-btn').addEventListener('click', async (e) => {
     e.preventDefault()

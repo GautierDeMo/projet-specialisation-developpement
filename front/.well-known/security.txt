@@ -1,0 +1,5 @@
+Contact: mailto:jeremy.duflot@livecampus.cloud
+Contact: https://github.com/GautierDeMo/projet-specialisation-developpement/security/advisories/new
+Expires: 2026-12-31T23:59:59.000Z
+Preferred-Languages: fr, en
+Canonical: https://localhost:5000/.well-known/security.txt

@@ -57,14 +57,25 @@ model User {
 
   email    String  @unique
   password String
-  // TODO: si on a le temps d'ajouter ce rôle
-  // role     String?
   token    Token[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 }
 
-// TODO: Ne pas oublier le `(npx) prisma migrate dev` dès lors que le(s) schéma(s) sont écrits
+model CspReport {
+  id Int @id @default(autoincrement())
+
+  documentUri       String @map("document_uri")
+  violatedDirective String @map("violated_directive")
+  blockedUri        String @map("blocked_uri")
+  rawReport         String @map("raw_report") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("csp_reports")
+}
+
+// Ne pas oublier le `(npx) prisma migrate dev` dès lors que le(s) schéma(s) sont écrits
 // Ainsi que la génération du client avec `(npx) prisma generate`
 // https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/postgresq

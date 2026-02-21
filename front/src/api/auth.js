@@ -1,7 +1,6 @@
 import { apiFetch } from './client.js'
 import { authStore } from '../store/auth.js'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+import { API_URL } from '../config/api.config.js'
 
 export async function register(email, password) {
   const response = await apiFetch('/user/register', {
