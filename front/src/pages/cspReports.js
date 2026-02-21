@@ -1,4 +1,4 @@
-import { cspService } from '../services/csp.service.js'
+import { cspService } from '../api/csp.js'
 import { createTrustedHTML } from '../utils/trustedTypes.js'
 
 export default async function renderCspReports() {
@@ -12,7 +12,7 @@ export default async function renderCspReports() {
           🗑️ Supprimer tous les rapports
         </button>
       </div>
-      
+
       <div id="reports-container">
         <p class="text-gray-500">Chargement...</p>
       </div>
@@ -73,29 +73,29 @@ async function loadReports() {
                   report.createdAt
                 ).toLocaleString('fr-FR')}</span>
               </div>
-              
+
               <div class="space-y-2 text-sm">
                 <div class="flex items-start gap-2">
-                  <strong class="text-gray-700 min-w-[140px]">Page :</strong> 
+                  <strong class="text-gray-700 min-w-[140px]">Page :</strong>
                   <code class="bg-gray-100 px-2 py-1 rounded text-xs flex-1 break-all">${
                     report.documentUri
                   }</code>
                 </div>
-                
+
                 <div class="flex items-start gap-2">
-                  <strong class="text-gray-700 min-w-[140px]">Directive violée :</strong> 
+                  <strong class="text-gray-700 min-w-[140px]">Directive violée :</strong>
                   <code class="bg-red-50 text-red-700 px-2 py-1 rounded text-xs font-mono">${
                     report.violatedDirective
                   }</code>
                 </div>
-                
+
                 <div class="flex items-start gap-2">
-                  <strong class="text-gray-700 min-w-[140px]">Ressource bloquée :</strong> 
+                  <strong class="text-gray-700 min-w-[140px]">Ressource bloquée :</strong>
                   <code class="bg-gray-100 px-2 py-1 rounded text-xs flex-1 break-all">${
                     report.blockedUri
                   }</code>
                 </div>
-                
+
                 <details class="mt-3">
                   <summary class="cursor-pointer text-blue-600 hover:underline font-medium">
                     📄 Voir le rapport complet JSON

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Image" ADD COLUMN     "data" BYTEA,
+ALTER COLUMN "url" DROP NOT NULL;

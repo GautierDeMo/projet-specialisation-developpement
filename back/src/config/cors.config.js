@@ -1,4 +1,6 @@
-const allowedOrigins = ['http://localhost:5000', 'https://localhost:5000']
+import "dotenv/config"
+
+const allowedOrigins = [`http://localhost:${process.env.FRONT_PORT}`, `https://localhost:${process.env.FRONT_PORT}`]
 
 var dynamicCorsOptions = function (req, callback) {
   let corsOptions

@@ -135,6 +135,14 @@ pnpm start
 
 **Note :** Le mot de passe devcert sera redemandé au lancement du backend.
 
+### 6. (Firefox) Approuver les certificats SSL sur le Front ET le Back
+
+> Lorsque l'on essaiera de s'inscrire sur l'application web Front, il se peut qu'une erreur intervienne liée au CORS.
+>
+> Dans ce cas là, il faudra se rendre sur l'application web Back, afin d'approuver le certificat SSL de cet url pour que l'appel fait depuis le Front sur l'application du Back soit autorisé.
+>
+> Pour l'approuver il faudra seulement faire en sorte de cliquer sur "Je connais les risques", ou "Se rendre quand même sur le site", lorsque vous tenterez d'accéder à l'application (Front ou Back d'ailleurs).
+
 ---
 
 ## 🔒 HTTPS / Certificats SSL
@@ -143,7 +151,7 @@ Le projet utilise **devcert** pour activer HTTPS en développement local.
 
 ### Avec certificats SSL (mode par défaut)
 
-```
+```text
 ✅ Backend HTTPS : https://localhost:3000 🔒
 ✅ Frontend HTTPS : https://localhost:5000 🔒
 ```
@@ -156,7 +164,7 @@ Un cadenas 🔒 apparaîtra dans la barre d'adresse du navigateur.
 
 Si la génération échoue, le projet fonctionne en HTTP :
 
-```
+```text
 ⚠️  Backend HTTP : http://localhost:3000
 ⚠️  Frontend HTTP : http://localhost:5000
 ```
@@ -330,7 +338,7 @@ Le projet implémente les mesures de sécurité suivantes :
 - ✅ **security.txt** (RFC 9116) : `/.well-known/security.txt`
 - ✅ **Détection automatique du protocole** - Frontend et backend toujours synchronisés
 
-**Score de sécurité : 100/100**
+> **Score de sécurité : 100/100**
 
 **Documentation complète :** [`docs/SECURITY_TESTS.md`](./docs/SECURITY_TESTS.md)
 
@@ -351,7 +359,7 @@ Voir le guide complet : [`docs/SECURITY_TESTS.md`](./docs/SECURITY_TESTS.md)
 
 ## 📁 Structure du projet
 
-```
+```text
 projet-specialisation-developpement/
 ├── back/                   # Backend Express + Prisma
 │   ├── src/
@@ -400,6 +408,6 @@ projet-specialisation-developpement/
 | Solène Gouin              |
 | Jérémy Duflot             |
 | Mickaël Desclaux-Arramond |
-| Gautier De Mauroy         |
+| Gautier de Mauroy         |
 
 ---
