@@ -142,7 +142,7 @@ export default function render(container) {
       // If there's an image URL, add it to the product
       if (imageUrl && response.product) {
         try {
-          await addImageToProduct(response.product.id, imageUrl)
+          await addImageToProduct(response.product.id, { imageUrl })
         } catch (imageError) {
           console.warn('Failed to add image:', imageError)
           // Don't fail the whole operation if image addition fails
