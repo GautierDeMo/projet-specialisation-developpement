@@ -8,21 +8,13 @@
 - **OpenSSL** : Pour les certificats SSL (Windows : `choco install openssl`)
 - **Git Bash** (Windows uniquement) : ⚠️ **PowerShell ne fonctionne PAS** avec devcert
 
-### ⚠️ Important Windows
-
-Le projet utilise `devcert` pour générer des certificats SSL locaux. **Utilisez Git Bash**, pas PowerShell !
-
-**Solutions compatibles :**
-
-- ✅ **Git Bash** (recommandé) - Installé avec [Git for Windows](https://git-scm.com/download/win)
-- ✅ WSL (Windows Subsystem for Linux)
-- ❌ PowerShell (ne fonctionne pas)
-
 ---
 
 ## 🚀 Installation rapide
 
 ### Méthode automatique (recommandée)
+
+> A la racine du projet :
 
 ```bash
 # 1. Installer OpenSSL (Windows uniquement)
@@ -72,7 +64,7 @@ Cette commande :
 
 #### Fichier `.env` (racine du projet)
 
-Copier `.env.example` en `.env` :
+Dupliquer le fichier `.env.example` en `.env`et choisir ses propres variables d'environnement :
 
 ```env
 POSTGRES_USER=user
@@ -82,10 +74,11 @@ POSTGRES_DB=db
 
 #### Fichier `back/.env`
 
-Copier `back/.env.example` en `back/.env` :
+Dupliquer le fichier `back/.env.example` en `back/.env`et choisir ses propres variables d'environnement :
+>Bien faire attention à utiliser les mêmes variables que dans votre `.env` à la racine pour le `DATABASE_URL`
 
 ```env
-DATABASE_URL="postgresql://devuser:devpassword@localhost:5432/devdb?schema=public"
+DATABASE_URL="postgresql://user:password@localhost:5432/db?schema=public"
 ACCESS_SECRET_KEY="your-super-secret-access-key-change-me"
 REFRESH_SECRET_KEY="your-super-secret-refresh-key-change-me"
 CSRF_SECRET="your-super-secret-csrf-key-change-me"
@@ -93,9 +86,7 @@ PORT=3000
 FRONT_PORT=5000
 ```
 
-⚠️ **Utiliser les mêmes valeurs** que dans le `.env` racine pour PostgreSQL
-
-💡 **Générer des clés sécurisées :**
+💡 **Si vous voulez générer des clés sécurisées :**
 
 ```bash
 openssl rand -base64 32  # Pour ACCESS_SECRET_KEY
@@ -105,23 +96,24 @@ openssl rand -base64 32  # Pour CSRF_SECRET
 
 #### Fichier `front/.env`
 
-Copier `front/.env.example` en `front/.env` :
+Dupliquer le fichier `front/.env.example` en `front/.env` et choisir ses propres variables d'environnement :
 
 ```env
-VITE_API_URL=localhost:3000 // sans protocole (http/https)
+VITE_API_URL=localhost:3000 // sans le protocole (http/https)
 PORT=5000
 ```
 
 ### 4. Appliquer les migrations Prisma
 
+> Depuis le répertoire `back/`
+
 ```bash
-cd back
-npx prisma migrate dev
+npx prisma migrate dev ## Pour créer la BDD avec les migrations automatiquement
 npx prisma generate
-pnpm seed
+pnpm seed # Pour peupler la bdd
 ```
 
-### 5. Lancer le projet
+### 5. Lancer le projet depuis la racine du projet
 
 ```bash
 pnpm start
@@ -144,6 +136,8 @@ Cette commande :
 >
 > Pour l'approuver il faudra seulement faire en sorte de cliquer sur "Je connais les risques", ou "Se rendre quand même
 > sur le site", lorsque vous tenterez d'accéder à l'application (Front ou Back d'ailleurs).
+>
+> Normalement Chrome fonctionne sans avoir besoin de réaliser ces actions.
 
 ---
 
@@ -151,33 +145,11 @@ Cette commande :
 
 Le projet utilise **devcert** pour activer HTTPS en développement local.
 
-### Avec certificats SSL (mode par défaut)
-
-```text
-✅ Backend HTTPS : https://localhost:3000 🔒
-✅ Frontend HTTPS : https://localhost:5000 🔒
-```
-
-Un cadenas 🔒 apparaîtra dans la barre d'adresse du navigateur.
-
-**Le protocole est détecté automatiquement** - pas besoin de configuration manuelle !
-
-### Sans certificats (fallback HTTP)
-
-Si la génération échoue, le projet fonctionne en HTTP :
-
-```text
-⚠️  Backend HTTP : http://localhost:3000
-⚠️  Frontend HTTP : http://localhost:5000
-```
-
-**Le protocole est toujours détecté automatiquement** - backend et frontend restent synchronisés !
-
 ---
 
 ## 📦 Commandes utiles
 
-### Lancement
+### Lancement (depuis la racine)
 
 ```bash
 pnpm start           # BDD + Backend + Frontend (tout lancer)
@@ -283,9 +255,7 @@ pnpm prisma generate
 ### La base de données ne démarre pas
 
 ```bash
-docker ps           # Vérifier que Docker tourne
-pnpm db:stop
-pnpm db:start
+docker ps           # Vérifier que Docker et votre BDD tourne
 ```
 
 ### Erreur de connexion Prisma
@@ -323,12 +293,12 @@ Le projet implémente les mesures de sécurité suivantes :
 - ✅ **HTTPS** avec certificats SSL locaux (devcert)
 - ✅ **HSTS** (HTTP Strict Transport Security) - Force HTTPS pendant 1 an
 - ✅ **CSP (Content Security Policy)** :
-    - Utilisation de **Nonces** dynamiques pour chaque requête.
-    - 💡 _Note : la directive `'strict-dynamic'` est volontairement omise pour assurer la compatibilité avec le
+  - Utilisation de **Nonces** dynamiques pour chaque requête.
+  - 💡 _Note : la directive `'strict-dynamic'` est volontairement omise pour assurer la compatibilité avec le
       chargement de modules ES en cascade de Vite en mode développement._
 - ✅ **Protection CSRF** : Implémentation du pattern **Double Submit Cookie** via `csrf-csrf` (v4).
-    - Tokens avec une durée de validité de **30 minutes**.
-    - Rejet systématique des requêtes non autorisées (Erreur 403).
+  - Tokens avec une durée de validité de **30 minutes**.
+  - Rejet systématique des requêtes non autorisées (Erreur 403).
 - ✅ **Trusted Types** - Protection XSS au niveau du DOM.
 - ✅ **Gestion des Cookies** : Flags `HttpOnly`, `SameSite: Strict` et `Secure` (activé dynamiquement via détection TLS).
 - ✅ **CORS** configuré et restreint aux domaines autorisés (sauf `/api/stats`).
@@ -352,39 +322,6 @@ Voir le guide complet : [`SECURITY_TESTS.md`](./SECURITY_TESTS.md)
 2. **CSP** : Lancer les tests XSS depuis la console (voir doc)
 3. **Trusted Types** : Vérifier `require-trusted-types-for 'script'` dans CSP
 4. **security.txt** : `https://localhost:5000/.well-known/security.txt`
-
----
-
-## 📁 Structure du projet
-
-```text
-projet-specialisation-developpement/
-├── back/                   # Backend Express + Prisma
-│   ├── src/
-│   │   ├── config/         # Configurations (CORS, SSL)
-│   │   ├── middlewares/    # Middlewares (HSTS, erreurs)
-│   │   ├── routes/         # Routes API
-│   │   └── main.js         # Point d'entrée
-│   ├── prisma/             # Schéma et migrations
-│   └── .env                # Variables d'environnement backend
-├── front/                  # Frontend Vite + Vanilla JS
-│   ├── public/
-│   │   └── .well-known/
-│   │       └── security.txt
-│   ├── src/
-│   │   ├── config/         # Configuration SSL & API
-│   │   ├── pages/          # Pages de l'app
-│   │   └── utils/          # Utilitaires (Trusted Types)
-│   ├── vite.config.js      # Config Vite avec HTTPS et CSP
-│   └── .env                # Variables d'environnement frontend
-├── SECURITY_TESTS.md       # Guide des tests de sécurité
-├── scripts/                # Scripts utilitaires
-│   └── fix-devcert.js      # Patch devcert pour Node.js 24+
-├── .cert/                  # Certificats SSL (ignoré par Git)
-├── .env                    # Config PostgreSQL
-├── docker-compose.yml      # Configuration Docker PostgreSQL
-└── package.json            # Scripts du monorepo
-```
 
 ---
 
