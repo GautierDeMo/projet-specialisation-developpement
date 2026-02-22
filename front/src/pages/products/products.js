@@ -207,7 +207,7 @@ async function loadProducts() {
             price: product.price,
             image:
               product.images && product.images.length > 0
-                ? product.images[0].data
+                ? product.images[0].url
                 : null,
           }
           addToCart(productData)
@@ -345,7 +345,7 @@ async function searchProducts(filters, csrfToken) {
             price: product.price,
             image:
               product.images && product.images.length > 0
-                ? product.images[0].data
+                ? product.images[0].url
                 : null,
           }
           addToCart(productData)

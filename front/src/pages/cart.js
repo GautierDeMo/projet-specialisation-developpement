@@ -8,7 +8,7 @@ export default function render(container) {
       <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Mon Panier</h1>
       </div>
-      
+
       <div id="cart-container">
         ${
           cart.length === 0
@@ -26,13 +26,13 @@ export default function render(container) {
         <div id="cart-items" class="space-y-4 mb-6">
           <!-- Cart items -->
         </div>
-        
+
         <div class="bg-gray-50 rounded-lg p-6">
           <div class="flex justify-between items-center mb-4">
             <span class="text-xl font-semibold">Total:</span>
             <span id="cart-total" class="text-2xl font-bold text-green-600">0.00 €</span>
           </div>
-          
+
           <div class="flex justify-center">
             <button id="clear-cart" class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition">
               Vider le panier
@@ -42,7 +42,7 @@ export default function render(container) {
           `
         }
       </div>
-      
+
       <div class="mt-8">
         <a href="#/products" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition inline-block">
           ← Continuer mes achats
@@ -68,7 +68,7 @@ function renderCartItems(cart) {
       <div class="flex items-center space-x-4">
         ${
           item.image
-            ? `<img src="data:image/jpeg;base64,${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">`
+            ? `<img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">`
             : `<div class="w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center"><span class="text-3xl">📦</span></div>`
         }
         <div>
@@ -77,7 +77,7 @@ function renderCartItems(cart) {
           <p class="text-sm text-gray-500">${item.description}</p>
         </div>
       </div>
-      
+
       <div class="flex items-center space-x-4">
         <div class="flex items-center space-x-2">
           <button class="quantity-btn minus bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded" data-index="${index}">
@@ -88,12 +88,12 @@ function renderCartItems(cart) {
             +
           </button>
         </div>
-        
+
         <div class="text-right">
           <p class="text-lg font-semibold">${(item.price * item.quantity).toFixed(2)} €</p>
           <p class="text-sm text-gray-500">${item.price.toFixed(2)} € / unité</p>
         </div>
-        
+
         <button class="remove-item bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition" data-index="${index}">
           🗑️
         </button>
