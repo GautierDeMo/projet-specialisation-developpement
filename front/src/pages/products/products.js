@@ -226,7 +226,8 @@ async function loadProducts() {
         }
 
         try {
-          await deleteProduct(productId)
+          const csrfToken = await getCsrfToken()
+          await deleteProduct(productId, csrfToken)
           alert('✅ Produit supprimé avec succès')
           await loadProducts() // Reload the products list
         } catch (error) {
@@ -364,7 +365,8 @@ async function searchProducts(filters, csrfToken) {
         }
 
         try {
-          await deleteProduct(productId)
+          const csrfToken = await getCsrfToken()
+          await deleteProduct(productId, csrfToken)
           alert('✅ Produit supprimé avec succès')
           const newCsrfToken = await getCsrfToken()
           await searchProducts({}, newCsrfToken)
