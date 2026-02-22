@@ -323,7 +323,7 @@ fetch(`${BACKEND_URL}/api/stats`)
 
 **Erreur typique :**
 
-```
+```text
 Access to fetch at 'https://localhost:3000/api/stats' from origin 'https://localhost:5000'
 has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present
 ```

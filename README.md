@@ -23,9 +23,16 @@ choco install openssl
 # 2. Installer les dépendances (depuis Git Bash sur Windows)
 pnpm install
 
-# 3. Configurer les .env (voir section ci-dessous)
+# 3. Configurer les .env (voir la section de l'installation détaillée ci-dessous)
 
-# 4. Lancer tout
+# 4. Générer la BDD, son client, et la peupler
+cd back/
+npx prisma migrate dev
+npx prisma generate
+pnpm seed
+
+# 5. Lancer tout
+cd ..
 pnpm start
 ```
 
@@ -75,7 +82,9 @@ POSTGRES_DB=db
 #### Fichier `back/.env`
 
 Dupliquer le fichier `back/.env.example` en `back/.env`et choisir ses propres variables d'environnement :
->Bien faire attention à utiliser les mêmes variables que dans votre `.env` à la racine pour le `DATABASE_URL`
+> Bien faire attention à utiliser les mêmes variables que dans votre `.env` à la racine pour le `DATABASE_URL`
+>
+> Ainsi qu'à faire correspondre votre variable `FRONT_PORT` avec la variable `PORT` dans le `.env` du front
 
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/db?schema=public"
@@ -97,6 +106,7 @@ openssl rand -base64 32  # Pour CSRF_SECRET
 #### Fichier `front/.env`
 
 Dupliquer le fichier `front/.env.example` en `front/.env` et choisir ses propres variables d'environnement :
+> Pensez à faire correspondre votre variable `PORT` avec la variable `FRONT_PORT` dans le `.env` du back
 
 ```env
 VITE_API_URL=localhost:3000 // sans le protocole (http/https)
