@@ -7,7 +7,7 @@
 | Solène  | mise en place de l'url de Statistiques, creation de la seed avec son script, ajout du frontend pour home, stats, dashboard, cart et toutes les pages products + update navbar, ajout router + navigate dans front, gestion non visible si pas connecté, ajout tests CRUD Product, gestion des merges et conflits, update du README |
 | Jérémy  | ajout de prettier, commande unique pour le lancement du projet, update du README, mise en place du respect CORS, ajout fichier security.txt,ajout page de rapport CSP, creation de csfrToken() pour la protection CSRF, protection failles XSS, mise en place HTTPS avec certificat SSL,                                           |
 | Mickaël | Mise en place de l'authentification backend + frontend avec refresh tokens, ajout des tests auth, ajout pages inscription et connexion avec securite mots de passe  + creation navbar                                                                                                                                              |
-| Gautier | Repo Github, initialisation du projet avec folder front & back, docker compose, config express & vite, Début README, CRUD des produits, DTO                                                                                                                                                                                        |
+| Gautier | Repo Github, initialisation du projet avec folder front & back, docker compose, config express & vite, Début README, CRUD des produits, DTO sur produits et images => validations. PR reviews avec toute l'équipe. Dernier merges/updates/fixs sur le projet avant envoi au professeur                                                                                                                                                                                        |
 
 ## Tâches à réaliser
 
@@ -56,44 +56,44 @@
 ## BDD
 
 - Créer l'entité `Produit` avec les champs suivants :
-    - Identifiant
-    - Libellé
-    - Description
-    - Images (plusieurs)
-    - Prix
-    - Catégorie (cela peut être un simple texte)
-    - created_at
-    - updated_at
+  - Identifiant
+  - Libellé
+  - Description
+  - Images (plusieurs)
+  - Prix
+  - Catégorie (cela peut être un simple texte)
+  - created_at
+  - updated_at
 - Créer une table `User` :
-    - id
-    - email
-    - password
-    - token_id
-    - created_at
-    - updated_at
+  - id
+  - email
+  - password
+  - token_id
+  - created_at
+  - updated_at
 - Créer la table `Token`:
-    - token
-    - expired_at
-    - created_at
-    - updated_at
+  - token
+  - expired_at
+  - created_at
+  - updated_at
 
 ## Front
 
 - En tant que visiteur vous pourrez :
-    - Se connecter ✅
-    - S'inscrire ✅
-    - Afficher tous les produits ✅
-    - Afficher un seul produit ✅
-    - Rechercher des produits ✅
-    - Ajouter un produit au panier ✅
-    - Accéder à l'URL de statistiques ✅
+  - Se connecter ✅
+  - S'inscrire ✅
+  - Afficher tous les produits ✅
+  - Afficher un seul produit ✅
+  - Rechercher des produits ✅
+  - Ajouter un produit au panier ✅
+  - Accéder à l'URL de statistiques ✅
 
 - En tant que personne connectée on pourra :
-    - Visualiser son dashboard (page vide) ✅
-    - Se déconnecter ✅
-    - Ajouter un produit ✅
-    - Modifier un produit ✅
-    - Supprimer un produit ✅
+  - Visualiser son dashboard (page vide) ✅
+  - Se déconnecter ✅
+  - Ajouter un produit ✅
+  - Modifier un produit ✅
+  - Supprimer un produit ✅
 
 ## API/Url stats
 

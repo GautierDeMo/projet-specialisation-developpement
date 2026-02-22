@@ -30,12 +30,12 @@ export default async function render(container) {
           ← Retour au produit
         </a>
       </div>
-      
+
       <div class="bg-white rounded-lg shadow-lg p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">✏️ Modifier le produit</h1>
-        
+
         <div id="loading" class="text-gray-500">Chargement du produit...</div>
-        
+
         <form id="product-form" class="space-y-6 hidden">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -98,7 +98,7 @@ export default async function render(container) {
 
           <div>
             <label for="imageUrl" class="block text-sm font-medium text-gray-700 mb-2">
-             Ajouter l'URL d'une image (optionnel)
+              Ajouter l'URL d'une image (optionnel)
             </label>
             <input
               id="imageUrl"

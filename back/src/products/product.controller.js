@@ -1,5 +1,4 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { saveImage } from '../images/image.service.js'
 import { urlToBase64 } from '../utils/urlToBase64.js'
 import {
   findProduct,
@@ -29,7 +28,6 @@ export async function deleteProductById(req, res, next) {
 export async function getProducts(req, res, next) {
   try {
     const products = await findAllProducts()
-
     if (!products.length) {
       return res.status(404).json({ msg: 'No products in this query' })
     }
@@ -77,9 +75,7 @@ export async function putProductById(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function postProduct(req, res, next) {
   try {
-    const { category, description, name, price, imageUrl } = req.body
-
-    const productData = { category, description, name, price }
+    const { category, description, name, price } = req.body
 
     const existingProduct = await findProduct({
       name: name,
@@ -91,24 +87,18 @@ export async function postProduct(req, res, next) {
         .json({ msg: 'Product already exists', product: existingProduct })
     }
 
-    const newProduct = await saveProduct(productData)
+    const productData = { category, description, name, price }
 
-    if (imageUrl) {
-      const imageBase64 = await urlToBase64(imageUrl)
-      const newImage = await saveImage({
-        productId: newProduct.id,
-        imageBase64,
-      })
-      return res.status(201).json({
-        msg: `New product created: ${name}`,
-        product: newProduct,
-        image: newImage,
-      })
+    if (req.body.image) {
+      const urlBase64 = await urlToBase64(req.body.image.url)
+      productData.images = {
+        create: [{ url: req.body.image.url, urlBase64 }]
+      }
     }
 
-    return res
-      .status(201)
-      .json({ msg: `New product created: ${name}`, product: newProduct })
+    const newProduct = await saveProduct(productData)
+
+    return res.status(201).json({ msg: `New product created: ${name}`, product: newProduct, image: req.body.image })
   } catch (error) {
     next(error)
   }
@@ -117,13 +107,11 @@ export async function postProduct(req, res, next) {
 /** @type {import("express").RequestHandler} */
 export async function searchProducts(req, res, next) {
   try {
-    const { category, description, name, price } = req.body
+    const { category, name } = req.body
 
     const filters = {}
     if (category) filters.category = category
-    if (description) filters.description = description
     if (name) filters.name = name
-    if (price !== undefined) filters.price = Number(price)
 
     const products = await findProducts(filters)
 

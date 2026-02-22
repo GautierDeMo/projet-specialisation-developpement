@@ -28,7 +28,7 @@ export default async function render(container) {
           ← Retour aux produits
         </a>
       </div>
-      
+
       <div id="product-detail">
         <p class="text-gray-500">Chargement...</p>
       </div>
@@ -71,12 +71,12 @@ async function loadProductDetail(productId) {
               <p class="text-3xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
             </div>
           </div>
-          
+
           <div class="mb-6">
             <h2 class="text-xl font-semibold text-gray-700 mb-3">Description</h2>
             <p class="text-gray-600 leading-relaxed">${product.description}</p>
           </div>
-          
+
           ${
             product.images && product.images.length > 0
               ? `
@@ -87,7 +87,7 @@ async function loadProductDetail(productId) {
                   .map(
                     (image) => `
                   <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <img src="data:image/jpeg;base64,${image.data}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <img src="${image.url}" alt="${product.name}" class="w-full h-48 object-cover">
                   </div>
                 `
                   )
@@ -97,7 +97,7 @@ async function loadProductDetail(productId) {
           `
               : ''
           }
-          
+
           <div class="flex justify-between items-center pt-6 border-t border-gray-200">
             <div class="flex gap-3">
               ${
@@ -156,7 +156,7 @@ async function loadProductDetail(productId) {
           price: product.price,
           image:
             product.images && product.images.length > 0
-              ? product.images[0].data
+              ? product.images[0].url
               : null,
         }
         addToCart(productData)

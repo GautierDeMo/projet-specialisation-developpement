@@ -61,7 +61,7 @@ export async function checkAuth() {
   try {
     // Get CSRF token for the refresh request
     const csrfToken = await getCsrfToken()
-    
+
     const response = await fetch(`${API_URL}/user/refresh`, {
       method: 'POST',
       credentials: 'include',

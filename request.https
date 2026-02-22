@@ -1,64 +1,88 @@
 ################################## Variables ###################################
 
-@productId=25
+@imageUrl=https://images.unsplash.com/photo-1505740420928-5e560c06d30e
 @userEmail=gautier@exemple.com
 @userPassword=Doxwar-sydcen-7rapmo
-@userId=1
-@userToken=44f94b1779c69988d12779facae848aee783bca45c73416953555668d9fefd43
+@userId={{login.response.body.user.id}}
 
-################################## GET ROUTES ##################################
-
-### Show all PRODUCTS
-GET https://localhost:3000/api/products
+################################# GET ROUTES ##################################
 
 ### Show one PRODUCT
-GET https://localhost:3000/api/products/{{productId}}
+GET https://localhost:3000/api/products/{{createOneProduct.response.body.product.id}}
 
 ################################# POST ROUTES ##################################
 
 ### Create one IMAGE
-POST https://localhost:3000/api/images/{{productId}} HTTP/1.1
+POST https://localhost:3000/api/images/{{createOneProduct.response.body.product.id}} HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
 
 {
-  "imageUrl": "bfaobfiufbeafveaifbeaoin"
+  "imageUrl": "{{imageUrl}}"
 }
 
 ### Create one PRODUCT
+# @name createOneProduct
 POST https://localhost:3000/api/products HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
 
 {
-  "category": "Jardin",
+  "category": "Sport",
   "description": "Pour ramasser les feuilles",
-  "images": [],
-  "name": "Râteau en plastique",
+  "image": {
+    "url": "{{imageUrl}}"
+  },
+  "name": "Râteau en chocolat vert",
   "price": 13.5
 }
 
+### Login
+# @name login
+POST https://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}
+
+### Register
+# @name register
+POST https://localhost:3000/api/user/register
+Content-Type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}
+
 ### Search PRODUCTS
-POST https://localhost:3000/api/products/search
+# Soit on cherche par nom => on supprime la clé 'category', soit par catégorie, et on supprime la clé 'name"
+POST https://localhost:3000/api/products/search/
 Content-Type: application/json
 
 {
   "category": "Sport"
 }
 
-################################# UPDATE ROUTES #################################
+
+################################# PATCH ROUTES #################################
 
 ### Update one PRODUCT
-PUT https://localhost:3000/api/products/{{productId}} HTTP/1.1
+PUT https://localhost:3000/api/products/{{createOneProduct.response.body.product.id}} HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
 
 {
-  "category": "",
+  "category": "graouh",
   "description": "Non",
-  "images": [],
-  "name": "",
+  "name": "Tartanpion",
   "price": 1
 }
 
 ################################# DELETE ROUTES ################################
 
 ### Remove one PRODUCT
-DELETE https://localhost:3000/api/products/{{productId}} HTTP/1.1
+DELETE https://localhost:3000/api/products/{{createOneProduct.response.body.product.id}} HTTP/1.1
+Authorization: Bearer {{login.response.body.accessToken}}

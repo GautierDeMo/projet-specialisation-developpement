@@ -16,9 +16,9 @@ datasource db {
 model Image {
   id Int @id @default(autoincrement())
 
-  data      Bytes?
   productId Int     @map("product_id")
-  url       String?
+  url       String
+  urlBase64 Bytes
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 

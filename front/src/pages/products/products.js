@@ -24,7 +24,7 @@ export default async function render(container) {
           }
         </div>
       </div>
-      
+
       <!-- Search form (hidden by default) -->
       <div id="search-form" class="hidden mb-6 p-4 bg-gray-50 rounded-lg">
         <h3 class="text-lg font-semibold mb-3">Rechercher des produits</h3>
@@ -57,7 +57,7 @@ export default async function render(container) {
           </button>
         </div>
       </div>
-      
+
       <div id="products-container">
         <p class="text-gray-500">Chargement...</p>
       </div>
@@ -149,21 +149,21 @@ async function loadProducts() {
               <p class="text-xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
             </div>
           </div>
-          
+
           <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
-          
+
           <div class="flex justify-between items-center">
             <a href="#/products/${product.id}" class="text-blue-600 hover:underline text-sm font-medium">
               👁️ Voir détails
             </a>
-            
+
             ${
               authStore.isAuthenticated()
                 ? `
               <div class="flex gap-2">
-               <button class="add-to-cart-btn text-green-600 hover:underline text-sm font-medium cursor-pointer" data-product-id="${product.id}">
+                <button class="add-to-cart-btn text-green-600 hover:underline text-sm font-medium cursor-pointer" data-product-id="${product.id}">
                 🛒 Ajouter au panier
-              </button>
+                </button>
                 <a href="#/products/${product.id}/edit" class="text-yellow-600 hover:underline text-sm font-medium">
                   ✏️ Modifier
                 </a>
@@ -207,7 +207,7 @@ async function loadProducts() {
             price: product.price,
             image:
               product.images && product.images.length > 0
-                ? product.images[0].data
+                ? product.images[0].url
                 : null,
           }
           addToCart(productData)
@@ -226,7 +226,8 @@ async function loadProducts() {
         }
 
         try {
-          await deleteProduct(productId)
+          const csrfToken = await getCsrfToken()
+          await deleteProduct(productId, csrfToken)
           alert('✅ Produit supprimé avec succès')
           await loadProducts() // Reload the products list
         } catch (error) {
@@ -287,14 +288,14 @@ async function searchProducts(filters, csrfToken) {
               <p class="text-xl font-bold text-green-600">${product.price.toFixed(2)} €</p>
             </div>
           </div>
-          
+
           <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
-          
+
           <div class="flex justify-between items-center">
             <a href="#/products/${product.id}" class="text-blue-600 hover:underline text-sm font-medium">
               👁️ Voir détails
             </a>
-            
+
             ${
               authStore.isAuthenticated()
                 ? `
@@ -345,7 +346,7 @@ async function searchProducts(filters, csrfToken) {
             price: product.price,
             image:
               product.images && product.images.length > 0
-                ? product.images[0].data
+                ? product.images[0].url
                 : null,
           }
           addToCart(productData)
@@ -364,7 +365,8 @@ async function searchProducts(filters, csrfToken) {
         }
 
         try {
-          await deleteProduct(productId)
+          const csrfToken = await getCsrfToken()
+          await deleteProduct(productId, csrfToken)
           alert('✅ Produit supprimé avec succès')
           const newCsrfToken = await getCsrfToken()
           await searchProducts({}, newCsrfToken)
