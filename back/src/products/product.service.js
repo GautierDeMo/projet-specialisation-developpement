@@ -87,6 +87,7 @@ export async function productsCheck(params) {
 export async function saveProduct(params) {
   return prisma.product.create({
     data: { ...params },
+    include: { images: true },
   })
 }
 

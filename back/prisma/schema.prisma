@@ -16,7 +16,7 @@ datasource db {
 model Image {
   id Int @id @default(autoincrement())
 
-  productId Int     @map("product_id") @unique
+  productId Int     @map("product_id")
   url       String
   urlBase64 Bytes
 

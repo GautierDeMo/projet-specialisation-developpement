@@ -59,7 +59,7 @@ Content-Type: application/json
 
 ### Search PRODUCTS
 # Soit on cherche par nom => on supprime la clé 'category', soit par catégorie, et on supprime la clé 'name"
-GET https://localhost:3000/api/products/search/
+POST https://localhost:3000/api/products/search/
 Content-Type: application/json
 
 {
@@ -86,6 +86,3 @@ Authorization: Bearer {{login.response.body.accessToken}}
 ### Remove one PRODUCT
 DELETE https://localhost:3000/api/products/{{createOneProduct.response.body.product.id}} HTTP/1.1
 Authorization: Bearer {{login.response.body.accessToken}}
-
-### Remove one IMAGE
-DELETE https://localhost:3000/api/images/

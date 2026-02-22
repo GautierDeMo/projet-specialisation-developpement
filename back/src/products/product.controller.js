@@ -89,9 +89,8 @@ export async function postProduct(req, res, next) {
 
     const productData = { category, description, name, price }
 
-    const urlBase64 = await urlToBase64(req.body.image.url)
-
     if (req.body.image) {
+      const urlBase64 = await urlToBase64(req.body.image.url)
       productData.images = {
         create: [{ url: req.body.image.url, urlBase64 }]
       }
