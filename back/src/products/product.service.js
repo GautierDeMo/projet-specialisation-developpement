@@ -10,26 +10,17 @@ export async function deleteProduct(params) {
 }
 
 export async function findAllProducts() {
-  const products = await prisma.product.findMany({
+  return await prisma.product.findMany({
     include: {
       images: {
         select: {
           id: true,
-          data: true,
+          url: true,
         },
         take: 1,
       },
     },
   })
-
-  // Convert image data to base64 for JSON serialization
-  return products.map((product) => ({
-    ...product,
-    images: product.images.map((image) => ({
-      ...image,
-      data: image.data ? Buffer.from(image.data).toString('base64') : null,
-    })),
-  }))
 }
 
 export async function findProduct(params) {
@@ -39,22 +30,14 @@ export async function findProduct(params) {
       images: {
         select: {
           id: true,
-          data: true,
+          url: true,
         },
       },
     },
   })
 
   if (!product) return null
-
-  // Convert image data to base64 for JSON serialization
-  return {
-    ...product,
-    images: product.images.map((image) => ({
-      ...image,
-      data: image.data ? Buffer.from(image.data).toString('base64') : null,
-    })),
-  }
+  return product
 }
 
 export async function findProducts(params) {
@@ -71,27 +54,18 @@ export async function findProducts(params) {
     where.category = params.category
   }
 
-  const products = await prisma.product.findMany({
+  return await prisma.product.findMany({
     where,
     include: {
       images: {
         select: {
           id: true,
-          data: true,
+          url: true,
         },
         take: 1, // Only get first image for card display
       },
     },
   })
-
-  // Convert image data to base64 for JSON serialization
-  return products.map((product) => ({
-    ...product,
-    images: product.images.map((image) => ({
-      ...image,
-      data: image.data ? Buffer.from(image.data).toString('base64') : null,
-    })),
-  }))
 }
 
 export async function productCheck(params) {

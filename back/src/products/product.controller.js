@@ -1,5 +1,4 @@
 // dans ce fichier sera la méthode de l'endpoint API stats
-import { urlToBase64 } from "../utils/utils.js"
 import { urlToBase64 } from '../utils/urlToBase64.js'
 import {
   findProduct,
@@ -29,7 +28,6 @@ export async function deleteProductById(req, res, next) {
 export async function getProducts(req, res, next) {
   try {
     const products = await findAllProducts()
-
     if (!products.length) {
       return res.status(404).json({ msg: 'No products in this query' })
     }

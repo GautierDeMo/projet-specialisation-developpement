@@ -1,5 +1,5 @@
 import { prisma } from '../orm/client.js'
-import { urlToBase64 } from "../utils/utils.js"
+import { urlToBase64 } from '../utils/urlToBase64.js'
 import { ImageDTO } from "./image.dto.js"
 
 export async function saveImage({ productId, url }) {

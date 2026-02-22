@@ -1,4 +1,3 @@
-import { urlToBase64 } from '../utils/urlToBase64.js'
 import { saveImage } from './image.service.js'
 
 /** @type {import("express").RequestHandler} */
@@ -14,7 +13,7 @@ export async function postImageAfterProductCreation(req, res, next) {
 
     if (req.body.imageUrl && req.params.productId) {
       const newImage = await saveImage({ productId: req.params.productId, imageBase64 })
-      
+
       return res.status(201).json({ msg: `New image added`, image: newImage })
     }
     return res.status(400).json({ msg: 'No image data provided' })
