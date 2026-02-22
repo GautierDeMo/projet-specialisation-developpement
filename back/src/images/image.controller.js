@@ -12,7 +12,7 @@ export async function postImageAfterProductCreation(req, res, next) {
     console.log("begin image creation", req.body.imageUrl, req.params.productId)
 
     if (req.body.imageUrl && req.params.productId) {
-      const newImage = await saveImage({ productId: req.params.productId, imageBase64 })
+      const newImage = await saveImage({ productId: req.params.productId, url: req.body.imageUrl })
 
       return res.status(201).json({ msg: `New image added`, image: newImage })
     }

@@ -1,4 +1,4 @@
-import { createProduct, addImageToProduct } from '../../api/product.js'
+import { createProduct } from '../../api/product.js'
 import { createTrustedHTML } from '../../utils/trustedTypes.js'
 import { getCsrfToken } from '../../utils/csrf.js'
 
@@ -10,10 +10,10 @@ export default function render(container) {
           ← Retour aux produits
         </a>
       </div>
-      
+
       <div class="bg-white rounded-lg shadow-lg p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">➕ Ajouter un nouveau produit</h1>
-        
+
         <form id="product-form" class="space-y-6">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
@@ -134,22 +134,16 @@ export default function render(container) {
       price: Number.parseFloat(container.querySelector('#price').value),
       description: container.querySelector('#description').value.trim(),
     }
-
     const imageUrl = container.querySelector('#imageUrl').value.trim()
 
+    if (imageUrl) {
+      productData.image = {
+        url: imageUrl
+      }
+    }
     try {
       const csrfToken = await getCsrfToken()
-      const response = await createProduct(productData, csrfToken)
-
-      // If there's an image URL, add it to the product
-      if (imageUrl && response.product) {
-        try {
-          await addImageToProduct(response.product.id, { imageUrl }, csrfToken)
-        } catch (imageError) {
-          console.warn('Failed to add image:', imageError)
-          // Don't fail the whole operation if image addition fails
-        }
-      }
+      await createProduct(productData, csrfToken)
 
       alert('✅ Produit créé avec succès!')
       location.hash = '#/products'
